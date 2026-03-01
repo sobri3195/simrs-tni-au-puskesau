@@ -8,7 +8,7 @@ import { SimplePage } from '@/pages/simple-page';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Navigate to="/login" replace />
+    element: <Navigate to="/dashboard/command" replace />
   },
   {
     element: <AuthLayout />,
