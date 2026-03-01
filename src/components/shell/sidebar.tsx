@@ -11,6 +11,7 @@ export function Sidebar() {
           <p className="brand-subtitle">Puskesau Komando</p>
         </div>
       </div>
+      <p className="sidebar-caption">Navigasi Utama</p>
       <nav>
         {APP_MENU.map((item) => (
           <NavLink
