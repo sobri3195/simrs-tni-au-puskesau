@@ -4,6 +4,8 @@ import { AuthLayout } from '@/layouts/auth-layout';
 import { LoginPage } from '@/pages/login-page';
 import { PatientsPage } from '@/pages/patients-page';
 import { SimplePage } from '@/pages/simple-page';
+import { DashboardPage } from '@/pages/dashboard-page';
+import { SimrsModulesPage } from '@/pages/simrs-modules-page';
 
 const router = createBrowserRouter([
   {
@@ -20,8 +22,9 @@ const router = createBrowserRouter([
   {
     element: <AppLayout />,
     children: [
-      { path: '/dashboard/command', element: <SimplePage title="Dashboard Komando" /> },
+      { path: '/dashboard/command', element: <DashboardPage /> },
       { path: '/patients', element: <PatientsPage /> },
+      { path: '/simrs/modules', element: <SimrsModulesPage /> },
       { path: '/billing', element: <SimplePage title="Billing" /> },
       { path: '/logistics', element: <SimplePage title="Logistik" /> },
       { path: '/audit', element: <SimplePage title="Audit" /> },

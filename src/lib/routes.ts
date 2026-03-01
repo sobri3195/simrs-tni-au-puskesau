@@ -1,6 +1,7 @@
 export const APP_MENU = [
   { label: 'Dashboard', href: '/dashboard/command' },
   { label: 'Pasien', href: '/patients' },
+  { label: 'Modul SIMRS', href: '/simrs/modules' },
   { label: 'Registrasi', href: '/registrations/new' },
   { label: 'Layanan Klinis', href: '/emr/encounters/demo' },
   { label: 'Penunjang', href: '/lab/orders' },

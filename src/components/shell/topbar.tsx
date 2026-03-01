@@ -5,7 +5,10 @@ export function Topbar() {
         <strong>Context Unit: IGD Komando</strong>
         <div className="topbar-subtitle">SIMRS Puskesau • Operasional Harian</div>
       </div>
-      <span className="status-badge">Online & Sinkron</span>
+      <div className="topbar-actions">
+        <input className="topbar-search" placeholder="Cari menu / pasien cepat..." aria-label="Cari menu" />
+        <span className="status-badge">Online & Sinkron</span>
+      </div>
     </header>
   );
 }
