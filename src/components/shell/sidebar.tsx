@@ -8,7 +8,14 @@ export function Sidebar() {
       <nav>
         {APP_MENU.map((item) => (
           <div key={item.href} style={{ padding: '8px 0' }}>
-            <NavLink to={item.href} style={{ color: 'white' }}>
+            <NavLink
+              to={item.href}
+              style={({ isActive }) => ({
+                color: 'white',
+                fontWeight: isActive ? 700 : 400,
+                textDecoration: 'none'
+              })}
+            >
               {item.label}
             </NavLink>
           </div>

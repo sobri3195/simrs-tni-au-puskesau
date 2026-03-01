@@ -1,2 +1,2 @@
-export const API_MODE = process.env.NEXT_PUBLIC_API_MODE ?? 'mock';
-export const SESSION_TIMEOUT_MINUTES = Number(process.env.NEXT_PUBLIC_SESSION_TIMEOUT_MINUTES ?? '30');
+export const API_MODE = import.meta.env.VITE_API_MODE ?? 'mock';
+export const SESSION_TIMEOUT_MINUTES = Number(import.meta.env.VITE_SESSION_TIMEOUT_MINUTES ?? '30');

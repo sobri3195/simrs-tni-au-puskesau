@@ -1,9 +1,11 @@
-'use client';
-
 import { useMemo } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useLocation } from 'react-router-dom';
 
 export function useQueryState(name: string, fallback = '') {
-  const params = useSearchParams();
-  return useMemo(() => params.get(name) ?? fallback, [params, name, fallback]);
+  const { search } = useLocation();
+
+  return useMemo(() => {
+    const params = new URLSearchParams(search);
+    return params.get(name) ?? fallback;
+  }, [search, name, fallback]);
 }
