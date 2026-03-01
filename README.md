@@ -14,8 +14,12 @@ npm install
 npm run dev
 ```
 
+Server Vite sekarang dibuka ke `0.0.0.0`, jadi bisa diakses dari semua perangkat pada jaringan yang sama.
+
 ## Build Produksi
 ```bash
 npm run build
 npm run preview
 ```
+
+Tambahan: `npm run start` disediakan sebagai alias Vite untuk semua skenario development lokal.
