@@ -3,22 +3,23 @@ import { APP_MENU } from '@/lib/routes';
 
 export function Sidebar() {
   return (
-    <aside style={{ width: 260, background: 'var(--navy)', color: 'white', padding: 12 }}>
-      <h3>SIMRS TNI AU</h3>
+    <aside className="sidebar">
+      <div className="brand">
+        <img src="/logo-simrs.svg" alt="Logo SIMRS" />
+        <div>
+          <h3 className="brand-title">SIMRS TNI AU</h3>
+          <p className="brand-subtitle">Puskesau Komando</p>
+        </div>
+      </div>
       <nav>
         {APP_MENU.map((item) => (
-          <div key={item.href} style={{ padding: '8px 0' }}>
-            <NavLink
-              to={item.href}
-              style={({ isActive }) => ({
-                color: 'white',
-                fontWeight: isActive ? 700 : 400,
-                textDecoration: 'none'
-              })}
-            >
-              {item.label}
-            </NavLink>
-          </div>
+          <NavLink
+            key={item.href}
+            to={item.href}
+            className={({ isActive }) => `sidebar-link${isActive ? ' active' : ''}`}
+          >
+            {item.label}
+          </NavLink>
         ))}
       </nav>
     </aside>

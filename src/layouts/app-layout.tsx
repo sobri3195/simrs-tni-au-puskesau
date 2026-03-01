@@ -4,11 +4,11 @@ import { Topbar } from '@/components/shell/topbar';
 
 export function AppLayout() {
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
+    <div className="shell">
       <Sidebar />
-      <div style={{ flex: 1 }}>
+      <div className="shell-content">
         <Topbar />
-        <main style={{ padding: 16 }}>
+        <main className="page-main">
           <Outlet />
         </main>
       </div>
