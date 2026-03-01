@@ -55,7 +55,7 @@ Prinsip UX SIMRS TNI AU adalah **cepat, aman, terarah, dan tahan gangguan operas
   - `ENCRYPTION_KEY_ID`
 
 ### 0.5 Build, SSR/CSR, Vercel Notes
-- Build: `next build` langsung kompatibel Vercel tanpa custom server.
+- Build: `npm run build` menghasilkan bundle statis yang bisa di-deploy ke layanan hosting modern.
 - SSR-friendly: dashboard komando, list pasien, laporan snapshot (SEO/internal performance).
 - CSR-heavy: editor EMR, triase realtime, bed board drag-drop, notifikasi live.
 - Hybrid: gunakan server component untuk initial fetch + client component untuk interaksi form/table.
