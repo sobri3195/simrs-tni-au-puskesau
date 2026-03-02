@@ -10,6 +10,7 @@ interface SimplePageProps {
 
 export function SimplePage({ title, description }: SimplePageProps) {
   const navigate = useNavigate();
+  const isOutpatientPage = title.toLowerCase().includes('rawat jalan');
 
   const getPageIcon = () => {
     if (title.toLowerCase().includes('password')) return '🔐';
@@ -69,8 +70,8 @@ export function SimplePage({ title, description }: SimplePageProps) {
         minHeight: '60vh',
       }}
     >
-      <Card style={{ maxWidth: '480px', width: '100%' }}>
-        <CardBody style={{ textAlign: 'center', padding: '48px 32px' }}>
+      <Card style={{ maxWidth: isOutpatientPage ? '880px' : '480px', width: '100%' }}>
+        <CardBody style={{ textAlign: 'center', padding: isOutpatientPage ? '40px 32px' : '48px 32px' }}>
           <div
             style={{
               width: '80px',
@@ -88,9 +89,42 @@ export function SimplePage({ title, description }: SimplePageProps) {
             {getPageIcon()}
           </div>
           <h1 style={{ marginBottom: '12px', fontSize: '24px' }}>{title}</h1>
-          <p style={{ color: 'var(--fg-secondary)', marginBottom: '32px', lineHeight: 1.6 }}>
+          <p style={{ color: 'var(--fg-secondary)', marginBottom: isOutpatientPage ? '24px' : '32px', lineHeight: 1.6 }}>
             {getDescription()}
           </p>
+
+          {isOutpatientPage && (
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+                gap: '12px',
+                marginBottom: '24px',
+                textAlign: 'left',
+              }}
+            >
+              {[
+                { label: 'Antrian Hari Ini', value: '42 Pasien', hint: '16 menunggu' },
+                { label: 'Dokter Bertugas', value: '8 Dokter', hint: 'Poli umum & spesialis' },
+                { label: 'Rata-rata Tunggu', value: '18 Menit', hint: 'Lebih cepat 4 menit' },
+                { label: 'Kunjungan Selesai', value: '26 Kunjungan', hint: 'Sampai pukul 13:00' },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  style={{
+                    border: '1px solid var(--line)',
+                    borderRadius: 'var(--radius)',
+                    padding: '12px',
+                    background: 'var(--surface)',
+                  }}
+                >
+                  <div style={{ fontSize: '12px', color: 'var(--fg-secondary)' }}>{item.label}</div>
+                  <div style={{ fontWeight: 700, marginTop: '4px' }}>{item.value}</div>
+                  <div style={{ fontSize: '12px', color: 'var(--neutral)', marginTop: '6px' }}>{item.hint}</div>
+                </div>
+              ))}
+            </div>
+          )}
 
           {title.toLowerCase().includes('tidak ditemukan') ? (
             <Button onClick={() => navigate('/')} icon={
@@ -112,8 +146,9 @@ export function SimplePage({ title, description }: SimplePageProps) {
             </div>
           )}
 
-          {!title.toLowerCase().includes('tidak ditemukan') && 
-           !title.toLowerCase().includes('password') && (
+          {!title.toLowerCase().includes('tidak ditemukan') &&
+           !title.toLowerCase().includes('password') &&
+           !isOutpatientPage && (
             <div
               style={{
                 marginTop: '32px',
@@ -138,6 +173,25 @@ export function SimplePage({ title, description }: SimplePageProps) {
                 <line x1="12" y1="8" x2="12.01" y2="8" />
               </svg>
               Halaman ini sedang dalam pengembangan aktif dan akan segera tersedia.
+            </div>
+          )}
+
+          {isOutpatientPage && (
+            <div
+              style={{
+                marginTop: '28px',
+                padding: '16px',
+                border: '1px solid color-mix(in srgb, var(--airforce-blue) 20%, transparent)',
+                background: 'color-mix(in srgb, var(--airforce-light) 10%, white)',
+                borderRadius: 'var(--radius)',
+                textAlign: 'left',
+              }}
+            >
+              <div style={{ fontWeight: 700, marginBottom: '6px' }}>Aksi Cepat Rawat Jalan</div>
+              <div style={{ fontSize: '13px', color: 'var(--fg-secondary)', lineHeight: 1.6 }}>
+                Modul ini sudah disiapkan untuk operasional harian: registrasi kunjungan, triase awal, pemeriksaan dokter,
+                order penunjang, hingga penyelesaian administrasi pasien.
+              </div>
             </div>
           )}
         </CardBody>
