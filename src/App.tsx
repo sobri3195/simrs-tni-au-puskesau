@@ -11,6 +11,7 @@ import { EmergencyPage } from '@/pages/emergency-page';
 import { LabPage } from '@/pages/lab-page';
 import { PharmacyPage } from '@/pages/pharmacy-page';
 import { BillingPage } from '@/pages/billing-page';
+import { EmrPage } from '@/pages/emr-page';
 
 const router = createBrowserRouter([
   {
@@ -47,7 +48,7 @@ const router = createBrowserRouter([
       { path: '/clinical/outpatient', element: <SimplePage title="Rawat Jalan" /> },
       { path: '/clinical/emergency', element: <EmergencyPage /> },
       { path: '/clinical/inpatient', element: <SimplePage title="Rawat Inap" /> },
-      { path: '/clinical/emr', element: <SimplePage title="EMR" /> },
+      { path: '/clinical/emr', element: <EmrPage /> },
       { path: '/emr/encounters/demo', element: <SimplePage title="EMR Encounter" /> },
       
       // Support Services
