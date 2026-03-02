@@ -1,0 +1,209 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - img "Logo SIMRS" [ref=e6]
+      - generic [ref=e7]:
+        - heading "SIMRS TNI AU" [level=3] [ref=e8]
+        - paragraph [ref=e9]: Puskesau Komando
+    - paragraph [ref=e10]: Navigasi Utama
+    - navigation [ref=e11]:
+      - link "Dashboard" [ref=e13] [cursor=pointer]:
+        - /url: /dashboard/command
+        - img [ref=e15]
+        - generic [ref=e20]: Dashboard
+      - link "Pasien" [ref=e22] [cursor=pointer]:
+        - /url: /patients
+        - img [ref=e24]
+        - generic [ref=e29]: Pasien
+      - button "Registrasi & ADT" [ref=e31] [cursor=pointer]:
+        - img [ref=e33]
+        - generic [ref=e36]: Registrasi & ADT
+        - img [ref=e37]
+      - button "Layanan Klinis 5" [ref=e40] [cursor=pointer]:
+        - img [ref=e42]
+        - generic [ref=e44]: Layanan Klinis
+        - generic [ref=e45]: "5"
+        - img [ref=e46]
+      - button "Penunjang" [ref=e49] [cursor=pointer]:
+        - img [ref=e51]
+        - generic [ref=e53]: Penunjang
+        - img [ref=e54]
+      - button "Keuangan" [ref=e57] [cursor=pointer]:
+        - img [ref=e59]
+        - generic [ref=e61]: Keuangan
+        - img [ref=e62]
+      - button "Operasional RS" [ref=e65] [cursor=pointer]:
+        - img [ref=e67]
+        - generic [ref=e70]: Operasional RS
+        - img [ref=e71]
+      - button "Governance" [ref=e74] [cursor=pointer]:
+        - img [ref=e76]
+        - generic [ref=e78]: Governance
+        - img [ref=e79]
+      - button "Kolaborasi 12" [ref=e82] [cursor=pointer]:
+        - img [ref=e84]
+        - generic [ref=e86]: Kolaborasi
+        - generic [ref=e87]: "12"
+        - img [ref=e88]
+    - generic [ref=e91]:
+      - generic [ref=e92]: AS
+      - generic [ref=e93]:
+        - generic [ref=e94]: Dr. Andi Setiawan
+        - generic [ref=e95]: Dokter • IGD
+      - button "Logout" [ref=e96] [cursor=pointer]:
+        - img [ref=e97]
+  - generic [ref=e100]:
+    - banner [ref=e101]:
+      - generic [ref=e103]:
+        - generic [ref=e104]:
+          - strong [ref=e105]: "Unit: IGD Komando"
+          - generic [ref=e106]: Online
+        - generic [ref=e107]: SIMRS Puskesau • Operasional Harian
+      - generic [ref=e108]:
+        - generic [ref=e109]:
+          - searchbox "Cari menu, pasien, order... (Ctrl+K)" [ref=e110]
+          - img [ref=e111]
+        - button "Buat registrasi baru" [ref=e114] [cursor=pointer]:
+          - img [ref=e115]
+        - button "2" [ref=e117] [cursor=pointer]:
+          - img [ref=e118]
+          - generic [ref=e121]: "2"
+        - button "AS Dr. Andi Dokter IGD" [ref=e123] [cursor=pointer]:
+          - generic [ref=e124]: AS
+          - generic [ref=e125]:
+            - generic [ref=e126]: Dr. Andi
+            - generic [ref=e127]: Dokter IGD
+          - img [ref=e128]
+    - main [ref=e130]:
+      - generic [ref=e131]:
+        - generic [ref=e133]:
+          - generic [ref=e134]:
+            - heading "IGD & Triase" [level=1] [ref=e135]
+            - paragraph [ref=e136]: Manajemen pasien darurat dan penilaian triase cepat.
+          - generic [ref=e137]:
+            - button "Triage Board" [ref=e138] [cursor=pointer]:
+              - img [ref=e139]
+              - text: Triage Board
+            - button "P1 Alert" [ref=e141] [cursor=pointer]:
+              - img [ref=e142]
+              - text: P1 Alert
+        - generic [ref=e144]:
+          - generic [ref=e146]:
+            - generic [ref=e147]: "2"
+            - generic [ref=e148]: P1
+            - generic [ref=e149]: Kritis
+            - generic [ref=e150]: < 10 menit
+          - generic [ref=e152]:
+            - generic [ref=e153]: "3"
+            - generic [ref=e154]: P2
+            - generic [ref=e155]: Urgent
+            - generic [ref=e156]: < 30 menit
+          - generic [ref=e158]:
+            - generic [ref=e159]: "1"
+            - generic [ref=e160]: P3
+            - generic [ref=e161]: Normal
+            - generic [ref=e162]: < 60 menit
+          - generic [ref=e164]:
+            - generic [ref=e165]: "0"
+            - generic [ref=e166]: P0
+            - generic [ref=e167]: Meninggal
+            - generic [ref=e168]: "-"
+        - generic [ref=e169]:
+          - button "Antrian Pasien6" [ref=e170] [cursor=pointer]: Antrian Pasien6
+          - button "Form Triase" [ref=e172] [cursor=pointer]
+          - button "Resusitasi" [ref=e173] [cursor=pointer]
+        - tabpanel [ref=e174]:
+          - generic [ref=e176]:
+            - generic [ref=e177]:
+              - heading "Daftar Pasien IGD" [level=3] [ref=e179]
+              - generic [ref=e181]:
+                - generic [ref=e182]: "P1: 2"
+                - generic [ref=e183]: "P2: 3"
+                - generic [ref=e184]: "P3: 1"
+            - table [ref=e186]:
+              - rowgroup [ref=e187]:
+                - row "Pasien Keluhan Triage Status Waktu" [ref=e188]:
+                  - columnheader "Pasien" [ref=e189]
+                  - columnheader "Keluhan" [ref=e190]
+                  - columnheader "Triage" [ref=e191]
+                  - columnheader "Status" [ref=e192]
+                  - columnheader "Waktu" [ref=e193]
+              - rowgroup [ref=e194]:
+                - row "AW Ahmad Wijaya ED001 • 45 tahun Nyeri dada, sesak napas Kritis Dalam penanganan 08:15" [ref=e195] [cursor=pointer]:
+                  - cell "AW Ahmad Wijaya ED001 • 45 tahun" [ref=e196]:
+                    - generic [ref=e197]:
+                      - generic "Ahmad Wijaya" [ref=e198]: AW
+                      - generic [ref=e199]:
+                        - generic [ref=e200]: Ahmad Wijaya
+                        - generic [ref=e201]: ED001 • 45 tahun
+                  - cell "Nyeri dada, sesak napas" [ref=e202]
+                  - cell "Kritis" [ref=e203]:
+                    - generic [ref=e204]: Kritis
+                  - cell "Dalam penanganan" [ref=e206]:
+                    - generic [ref=e207]: Dalam penanganan
+                  - cell "08:15" [ref=e208]
+                - row "DL Dewi Lestari ED004 • 55 tahun Sesak napas berat Kritis Dalam penanganan 08:50" [ref=e209] [cursor=pointer]:
+                  - cell "DL Dewi Lestari ED004 • 55 tahun" [ref=e210]:
+                    - generic [ref=e211]:
+                      - generic "Dewi Lestari" [ref=e212]: DL
+                      - generic [ref=e213]:
+                        - generic [ref=e214]: Dewi Lestari
+                        - generic [ref=e215]: ED004 • 55 tahun
+                  - cell "Sesak napas berat" [ref=e216]
+                  - cell "Kritis" [ref=e217]:
+                    - generic [ref=e218]: Kritis
+                  - cell "Dalam penanganan" [ref=e220]:
+                    - generic [ref=e221]: Dalam penanganan
+                  - cell "08:50" [ref=e222]
+                - row "SR Siti Rahayu ED002 • 32 tahun Demam tinggi (>39°C) Urgent Menunggu dokter 08:30" [ref=e223] [cursor=pointer]:
+                  - cell "SR Siti Rahayu ED002 • 32 tahun" [ref=e224]:
+                    - generic [ref=e225]:
+                      - generic "Siti Rahayu" [ref=e226]: SR
+                      - generic [ref=e227]:
+                        - generic [ref=e228]: Siti Rahayu
+                        - generic [ref=e229]: ED002 • 32 tahun
+                  - cell "Demam tinggi (>39°C)" [ref=e230]
+                  - cell "Urgent" [ref=e231]:
+                    - generic [ref=e232]: Urgent
+                  - cell "Menunggu dokter" [ref=e234]:
+                    - generic [ref=e235]: Menunggu dokter
+                  - cell "08:30" [ref=e236]
+                - row "RK Rina Kusuma ED005 • 8 tahun Muntah-muntah, diare Urgent Menunggu lab 09:00" [ref=e237] [cursor=pointer]:
+                  - cell "RK Rina Kusuma ED005 • 8 tahun" [ref=e238]:
+                    - generic [ref=e239]:
+                      - generic "Rina Kusuma" [ref=e240]: RK
+                      - generic [ref=e241]:
+                        - generic [ref=e242]: Rina Kusuma
+                        - generic [ref=e243]: ED005 • 8 tahun
+                  - cell "Muntah-muntah, diare" [ref=e244]
+                  - cell "Urgent" [ref=e245]:
+                    - generic [ref=e246]: Urgent
+                  - cell "Menunggu lab" [ref=e248]:
+                    - generic [ref=e249]: Menunggu lab
+                  - cell "09:00" [ref=e250]
+                - row "HP Hendra P. ED006 • 38 tahun Nyeri perut kanan bawah Urgent Menunggu 09:15" [ref=e251] [cursor=pointer]:
+                  - cell "HP Hendra P. ED006 • 38 tahun" [ref=e252]:
+                    - generic [ref=e253]:
+                      - generic "Hendra P." [ref=e254]: HP
+                      - generic [ref=e255]:
+                        - generic [ref=e256]: Hendra P.
+                        - generic [ref=e257]: ED006 • 38 tahun
+                  - cell "Nyeri perut kanan bawah" [ref=e258]
+                  - cell "Urgent" [ref=e259]:
+                    - generic [ref=e260]: Urgent
+                  - cell "Menunggu" [ref=e262]:
+                    - generic [ref=e263]: Menunggu
+                  - cell "09:15" [ref=e264]
+                - row "BS Budi Santoso ED003 • 28 tahun Luka robek di lengan Normal Menunggu 08:45" [ref=e265] [cursor=pointer]:
+                  - cell "BS Budi Santoso ED003 • 28 tahun" [ref=e266]:
+                    - generic [ref=e267]:
+                      - generic "Budi Santoso" [ref=e268]: BS
+                      - generic [ref=e269]:
+                        - generic [ref=e270]: Budi Santoso
+                        - generic [ref=e271]: ED003 • 28 tahun
+                  - cell "Luka robek di lengan" [ref=e272]
+                  - cell "Normal" [ref=e273]:
+                    - generic [ref=e274]: Normal
+                  - cell "Menunggu" [ref=e276]:
+                    - generic [ref=e277]: Menunggu
+                  - cell "08:45" [ref=e278]

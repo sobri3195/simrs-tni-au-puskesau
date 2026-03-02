@@ -1,0 +1,275 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - img "Logo SIMRS" [ref=e6]
+      - generic [ref=e7]:
+        - heading "SIMRS TNI AU" [level=3] [ref=e8]
+        - paragraph [ref=e9]: Puskesau Komando
+    - paragraph [ref=e10]: Navigasi Utama
+    - navigation [ref=e11]:
+      - link "Dashboard" [ref=e13] [cursor=pointer]:
+        - /url: /dashboard/command
+        - img [ref=e15]
+        - generic [ref=e20]: Dashboard
+      - link "Pasien" [ref=e22] [cursor=pointer]:
+        - /url: /patients
+        - img [ref=e24]
+        - generic [ref=e29]: Pasien
+      - button "Registrasi & ADT" [ref=e31] [cursor=pointer]:
+        - img [ref=e33]
+        - generic [ref=e36]: Registrasi & ADT
+        - img [ref=e37]
+      - button "Layanan Klinis 5" [ref=e40] [cursor=pointer]:
+        - img [ref=e42]
+        - generic [ref=e44]: Layanan Klinis
+        - generic [ref=e45]: "5"
+        - img [ref=e46]
+      - button "Penunjang" [ref=e49] [cursor=pointer]:
+        - img [ref=e51]
+        - generic [ref=e53]: Penunjang
+        - img [ref=e54]
+      - button "Keuangan" [ref=e57] [cursor=pointer]:
+        - img [ref=e59]
+        - generic [ref=e61]: Keuangan
+        - img [ref=e62]
+      - button "Operasional RS" [ref=e65] [cursor=pointer]:
+        - img [ref=e67]
+        - generic [ref=e70]: Operasional RS
+        - img [ref=e71]
+      - button "Governance" [ref=e74] [cursor=pointer]:
+        - img [ref=e76]
+        - generic [ref=e78]: Governance
+        - img [ref=e79]
+      - button "Kolaborasi 12" [ref=e82] [cursor=pointer]:
+        - img [ref=e84]
+        - generic [ref=e86]: Kolaborasi
+        - generic [ref=e87]: "12"
+        - img [ref=e88]
+    - generic [ref=e91]:
+      - generic [ref=e92]: AS
+      - generic [ref=e93]:
+        - generic [ref=e94]: Dr. Andi Setiawan
+        - generic [ref=e95]: Dokter • IGD
+      - button "Logout" [ref=e96] [cursor=pointer]:
+        - img [ref=e97]
+  - generic [ref=e100]:
+    - banner [ref=e101]:
+      - generic [ref=e103]:
+        - generic [ref=e104]:
+          - strong [ref=e105]: "Unit: IGD Komando"
+          - generic [ref=e106]: Online
+        - generic [ref=e107]: SIMRS Puskesau • Operasional Harian
+      - generic [ref=e108]:
+        - generic [ref=e109]:
+          - searchbox "Cari menu, pasien, order... (Ctrl+K)" [ref=e110]
+          - img [ref=e111]
+        - button "Buat registrasi baru" [ref=e114] [cursor=pointer]:
+          - img [ref=e115]
+        - button "2" [ref=e117] [cursor=pointer]:
+          - img [ref=e118]
+          - generic [ref=e121]: "2"
+        - button "AS Dr. Andi Dokter IGD" [ref=e123] [cursor=pointer]:
+          - generic [ref=e124]: AS
+          - generic [ref=e125]:
+            - generic [ref=e126]: Dr. Andi
+            - generic [ref=e127]: Dokter IGD
+          - img [ref=e128]
+    - main [ref=e130]:
+      - generic [ref=e131]:
+        - generic [ref=e133]:
+          - generic [ref=e134]:
+            - heading "MPI Search Pasien" [level=1] [ref=e135]
+            - paragraph [ref=e136]: Cari pasien berdasarkan NIK, MRN, atau nama, lalu lanjutkan proses registrasi/layanan.
+          - button "Tambah Pasien" [ref=e137] [cursor=pointer]:
+            - img [ref=e138]
+            - text: Tambah Pasien
+        - generic [ref=e141]:
+          - generic [ref=e144]:
+            - generic:
+              - img
+            - textbox "Cari berdasarkan NIK, MRN, atau nama..." [ref=e145]
+          - combobox [ref=e147]:
+            - option "Status Militer" [disabled]
+            - option "Semua Status Militer" [selected]
+            - option "Aktif"
+            - option "Purnawirawan"
+            - option "Keluarga"
+            - option "Anak"
+          - combobox [ref=e149]:
+            - option "Unit" [disabled]
+            - option "Semua Unit" [selected]
+            - option "Skadron 1"
+            - option "Skadron 2"
+            - option "Skadron 3"
+            - option "Lanud Halim"
+        - generic [ref=e150]:
+          - button "Semua6" [ref=e151] [cursor=pointer]: Semua6
+          - button "Aktif5" [ref=e153] [cursor=pointer]
+          - button "Kritis1" [ref=e154] [cursor=pointer]
+        - table [ref=e156]:
+          - rowgroup [ref=e157]:
+            - row "ID Pasien Nama Pasien Status Militer Unit Triage Kunjungan Terakhir Status Aksi" [ref=e158]:
+              - columnheader "ID Pasien" [ref=e159]
+              - columnheader "Nama Pasien" [ref=e160]
+              - columnheader "Status Militer" [ref=e161]
+              - columnheader "Unit" [ref=e162]
+              - columnheader "Triage" [ref=e163]
+              - columnheader "Kunjungan Terakhir" [ref=e164]
+              - columnheader "Status" [ref=e165]
+              - columnheader "Aksi" [ref=e166]
+          - rowgroup [ref=e167]:
+            - row "P001 AW Ahmad Wijaya 45 tahun • Laki-laki Aktif Skadron 1 Kritis 15 Jan 2024 Aktif" [ref=e168] [cursor=pointer]:
+              - cell "P001" [ref=e169]:
+                - link "P001" [ref=e170]:
+                  - /url: /patients/P001
+              - cell "AW Ahmad Wijaya 45 tahun • Laki-laki" [ref=e171]:
+                - generic [ref=e172]:
+                  - generic "Ahmad Wijaya" [ref=e173]: AW
+                  - generic [ref=e174]:
+                    - generic [ref=e175]: Ahmad Wijaya
+                    - generic [ref=e176]: 45 tahun • Laki-laki
+              - cell "Aktif" [ref=e177]:
+                - generic [ref=e178]: Aktif
+              - cell "Skadron 1" [ref=e179]
+              - cell "Kritis" [ref=e180]:
+                - generic [ref=e181]: Kritis
+              - cell "15 Jan 2024" [ref=e183]
+              - cell "Aktif" [ref=e184]:
+                - generic [ref=e185]: Aktif
+              - cell [ref=e186]:
+                - generic [ref=e187]:
+                  - button [ref=e188]:
+                    - img [ref=e189]
+                  - button [ref=e192]:
+                    - img [ref=e193]
+            - row "P002 SR Siti Rahayu 32 tahun • Perempuan Keluarga Skadron 2 Urgent 14 Jan 2024 Aktif" [ref=e196] [cursor=pointer]:
+              - cell "P002" [ref=e197]:
+                - link "P002" [ref=e198]:
+                  - /url: /patients/P002
+              - cell "SR Siti Rahayu 32 tahun • Perempuan" [ref=e199]:
+                - generic [ref=e200]:
+                  - generic "Siti Rahayu" [ref=e201]: SR
+                  - generic [ref=e202]:
+                    - generic [ref=e203]: Siti Rahayu
+                    - generic [ref=e204]: 32 tahun • Perempuan
+              - cell "Keluarga" [ref=e205]:
+                - generic [ref=e206]: Keluarga
+              - cell "Skadron 2" [ref=e207]
+              - cell "Urgent" [ref=e208]:
+                - generic [ref=e209]: Urgent
+              - cell "14 Jan 2024" [ref=e211]
+              - cell "Aktif" [ref=e212]:
+                - generic [ref=e213]: Aktif
+              - cell [ref=e214]:
+                - generic [ref=e215]:
+                  - button [ref=e216]:
+                    - img [ref=e217]
+                  - button [ref=e220]:
+                    - img [ref=e221]
+            - row "P003 BS Budi Santoso 28 tahun • Laki-laki Purnawirawan Lanud Halim Normal 13 Jan 2024 Aktif" [ref=e224] [cursor=pointer]:
+              - cell "P003" [ref=e225]:
+                - link "P003" [ref=e226]:
+                  - /url: /patients/P003
+              - cell "BS Budi Santoso 28 tahun • Laki-laki" [ref=e227]:
+                - generic [ref=e228]:
+                  - generic "Budi Santoso" [ref=e229]: BS
+                  - generic [ref=e230]:
+                    - generic [ref=e231]: Budi Santoso
+                    - generic [ref=e232]: 28 tahun • Laki-laki
+              - cell "Purnawirawan" [ref=e233]:
+                - generic [ref=e234]: Purnawirawan
+              - cell "Lanud Halim" [ref=e235]
+              - cell "Normal" [ref=e236]:
+                - generic [ref=e237]: Normal
+              - cell "13 Jan 2024" [ref=e239]
+              - cell "Aktif" [ref=e240]:
+                - generic [ref=e241]: Aktif
+              - cell [ref=e242]:
+                - generic [ref=e243]:
+                  - button [ref=e244]:
+                    - img [ref=e245]
+                  - button [ref=e248]:
+                    - img [ref=e249]
+            - row "P004 DL Dewi Lestari 55 tahun • Perempuan Keluarga Skadron 1 - 10 Jan 2024 Aktif" [ref=e252] [cursor=pointer]:
+              - cell "P004" [ref=e253]:
+                - link "P004" [ref=e254]:
+                  - /url: /patients/P004
+              - cell "DL Dewi Lestari 55 tahun • Perempuan" [ref=e255]:
+                - generic [ref=e256]:
+                  - generic "Dewi Lestari" [ref=e257]: DL
+                  - generic [ref=e258]:
+                    - generic [ref=e259]: Dewi Lestari
+                    - generic [ref=e260]: 55 tahun • Perempuan
+              - cell "Keluarga" [ref=e261]:
+                - generic [ref=e262]: Keluarga
+              - cell "Skadron 1" [ref=e263]
+              - cell "-" [ref=e264]
+              - cell "10 Jan 2024" [ref=e265]
+              - cell "Aktif" [ref=e266]:
+                - generic [ref=e267]: Aktif
+              - cell [ref=e268]:
+                - generic [ref=e269]:
+                  - button [ref=e270]:
+                    - img [ref=e271]
+                  - button [ref=e274]:
+                    - img [ref=e275]
+            - row "P005 RK Rina Kusuma 8 tahun • Perempuan Anak Skadron 3 - 8 Jan 2024 Tidak Aktif" [ref=e278] [cursor=pointer]:
+              - cell "P005" [ref=e279]:
+                - link "P005" [ref=e280]:
+                  - /url: /patients/P005
+              - cell "RK Rina Kusuma 8 tahun • Perempuan" [ref=e281]:
+                - generic [ref=e282]:
+                  - generic "Rina Kusuma" [ref=e283]: RK
+                  - generic [ref=e284]:
+                    - generic [ref=e285]: Rina Kusuma
+                    - generic [ref=e286]: 8 tahun • Perempuan
+              - cell "Anak" [ref=e287]:
+                - generic [ref=e288]: Anak
+              - cell "Skadron 3" [ref=e289]
+              - cell "-" [ref=e290]
+              - cell "8 Jan 2024" [ref=e291]
+              - cell "Tidak Aktif" [ref=e292]:
+                - generic [ref=e293]: Tidak Aktif
+              - cell [ref=e294]:
+                - generic [ref=e295]:
+                  - button [ref=e296]:
+                    - img [ref=e297]
+                  - button [ref=e300]:
+                    - img [ref=e301]
+            - row "P006 HP Hendra Pratama 38 tahun • Laki-laki Aktif Skadron 2 Urgent 12 Jan 2024 Aktif" [ref=e304] [cursor=pointer]:
+              - cell "P006" [ref=e305]:
+                - link "P006" [ref=e306]:
+                  - /url: /patients/P006
+              - cell "HP Hendra Pratama 38 tahun • Laki-laki" [ref=e307]:
+                - generic [ref=e308]:
+                  - generic "Hendra Pratama" [ref=e309]: HP
+                  - generic [ref=e310]:
+                    - generic [ref=e311]: Hendra Pratama
+                    - generic [ref=e312]: 38 tahun • Laki-laki
+              - cell "Aktif" [ref=e313]:
+                - generic [ref=e314]: Aktif
+              - cell "Skadron 2" [ref=e315]
+              - cell "Urgent" [ref=e316]:
+                - generic [ref=e317]: Urgent
+              - cell "12 Jan 2024" [ref=e319]
+              - cell "Aktif" [ref=e320]:
+                - generic [ref=e321]: Aktif
+              - cell [ref=e322]:
+                - generic [ref=e323]:
+                  - button [ref=e324]:
+                    - img [ref=e325]
+                  - button [ref=e328]:
+                    - img [ref=e329]
+        - generic [ref=e332]:
+          - generic [ref=e334]:
+            - generic [ref=e335]: Total Pasien
+            - generic [ref=e336]: "6"
+          - generic [ref=e338]:
+            - generic [ref=e339]: Pasien Aktif
+            - generic [ref=e340]: "5"
+          - generic [ref=e342]:
+            - generic [ref=e343]: Kunjungan Bulan Ini
+            - generic [ref=e344]: "248"
+          - generic [ref=e346]:
+            - generic [ref=e347]: Pasien Baru
+            - generic [ref=e348]: "12"
