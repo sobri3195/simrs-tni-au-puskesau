@@ -58,6 +58,13 @@ const medicationTemplates = [
   { name: 'Metformin 500 mg', dose: '2x1', instruction: 'Sesudah makan' },
 ];
 
+const followUpChecklist = [
+  { id: 'education', label: 'Edukasi pasien dan keluarga', done: true },
+  { id: 'control', label: 'Jadwal kontrol 7 hari', done: false },
+  { id: 'lab-review', label: 'Review hasil lab lanjutan', done: false },
+  { id: 'bp-monitoring', label: 'Monitoring tekanan darah di rumah', done: true },
+];
+
 export function EmrPage() {
   const [activeTab, setActiveTab] = useState('soap');
   const [selectedEncounterId, setSelectedEncounterId] = useState(encounters[0].id);
@@ -68,6 +75,8 @@ export function EmrPage() {
     plan: 'Lanjut evaluasi EKG serial, troponin I, edukasi modifikasi faktor risiko, observasi 2 jam.',
   });
   const [savedAt, setSavedAt] = useState('09:42');
+  const [dischargePlan, setDischargePlan] = useState('Lanjutkan terapi anti-platelet, statin, dan kontrol faktor risiko.');
+  const [selectedChecklist, setSelectedChecklist] = useState<string[]>(followUpChecklist.filter((item) => item.done).map((item) => item.id));
 
   const selectedEncounter = useMemo(
     () => encounters.find((item) => item.id === selectedEncounterId) ?? encounters[0],
@@ -78,6 +87,10 @@ export function EmrPage() {
     const now = new Date();
     const time = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
     setSavedAt(time);
+  };
+
+  const toggleChecklist = (id: string) => {
+    setSelectedChecklist((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
   };
 
   return (
@@ -169,6 +182,7 @@ export function EmrPage() {
                   { id: 'soap', label: 'SOAP' },
                   { id: 'orders', label: 'Order Klinis', count: suggestedOrders.length },
                   { id: 'therapy', label: 'Terapi', count: medicationTemplates.length },
+                  { id: 'followup', label: 'Rencana Lanjut', count: followUpChecklist.length },
                 ]}
                 activeTab={activeTab}
                 onChange={setActiveTab}
@@ -220,6 +234,39 @@ export function EmrPage() {
                       </div>
                     </div>
                   ))}
+                </div>
+              </TabPanel>
+
+              <TabPanel activeTab={activeTab} tabId="followup">
+                <Alert variant="success" title="Discharge & Follow-up Planner">
+                  Susun rencana pulang pasien, edukasi, dan target kontrol dari encounter yang sedang berjalan.
+                </Alert>
+                <div style={{ marginTop: '12px', display: 'grid', gap: '12px' }}>
+                  <Textarea
+                    label="Ringkasan rencana tindak lanjut"
+                    value={dischargePlan}
+                    onChange={(e) => setDischargePlan(e.target.value)}
+                    rows={3}
+                  />
+
+                  <div style={{ border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: '12px' }}>
+                    <div style={{ fontWeight: 600, marginBottom: '8px' }}>Checklist transisi perawatan</div>
+                    <div style={{ display: 'grid', gap: '8px' }}>
+                      {followUpChecklist.map((item) => (
+                        <label key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                          <input type="checkbox" checked={selectedChecklist.includes(item.id)} onChange={() => toggleChecklist(item.id)} />
+                          <span>{item.label}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: '12px', color: 'var(--neutral)' }}>
+                      {selectedChecklist.length}/{followUpChecklist.length} checklist selesai
+                    </span>
+                    <Button variant="secondary">Kirim ke Instruksi Pulang</Button>
+                  </div>
                 </div>
               </TabPanel>
             </CardBody>
