@@ -11,6 +11,7 @@ interface SimplePageProps {
 export function SimplePage({ title, description }: SimplePageProps) {
   const navigate = useNavigate();
   const isOutpatientPage = title.toLowerCase().includes('rawat jalan');
+  const isInpatientPage = title.toLowerCase().includes('rawat inap');
 
   const getPageIcon = () => {
     if (title.toLowerCase().includes('password')) return '🔐';
@@ -70,8 +71,8 @@ export function SimplePage({ title, description }: SimplePageProps) {
         minHeight: '60vh',
       }}
     >
-      <Card style={{ maxWidth: isOutpatientPage ? '880px' : '480px', width: '100%' }}>
-        <CardBody style={{ textAlign: 'center', padding: isOutpatientPage ? '40px 32px' : '48px 32px' }}>
+      <Card style={{ maxWidth: isOutpatientPage || isInpatientPage ? '880px' : '480px', width: '100%' }}>
+        <CardBody style={{ textAlign: 'center', padding: isOutpatientPage || isInpatientPage ? '40px 32px' : '48px 32px' }}>
           <div
             style={{
               width: '80px',
@@ -89,7 +90,7 @@ export function SimplePage({ title, description }: SimplePageProps) {
             {getPageIcon()}
           </div>
           <h1 style={{ marginBottom: '12px', fontSize: '24px' }}>{title}</h1>
-          <p style={{ color: 'var(--fg-secondary)', marginBottom: isOutpatientPage ? '24px' : '32px', lineHeight: 1.6 }}>
+          <p style={{ color: 'var(--fg-secondary)', marginBottom: isOutpatientPage || isInpatientPage ? '24px' : '32px', lineHeight: 1.6 }}>
             {getDescription()}
           </p>
 
@@ -108,6 +109,39 @@ export function SimplePage({ title, description }: SimplePageProps) {
                 { label: 'Dokter Bertugas', value: '8 Dokter', hint: 'Poli umum & spesialis' },
                 { label: 'Rata-rata Tunggu', value: '18 Menit', hint: 'Lebih cepat 4 menit' },
                 { label: 'Kunjungan Selesai', value: '26 Kunjungan', hint: 'Sampai pukul 13:00' },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  style={{
+                    border: '1px solid var(--line)',
+                    borderRadius: 'var(--radius)',
+                    padding: '12px',
+                    background: 'var(--surface)',
+                  }}
+                >
+                  <div style={{ fontSize: '12px', color: 'var(--fg-secondary)' }}>{item.label}</div>
+                  <div style={{ fontWeight: 700, marginTop: '4px' }}>{item.value}</div>
+                  <div style={{ fontSize: '12px', color: 'var(--neutral)', marginTop: '6px' }}>{item.hint}</div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {isInpatientPage && (
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+                gap: '12px',
+                marginBottom: '24px',
+                textAlign: 'left',
+              }}
+            >
+              {[
+                { label: 'Pasien Dirawat', value: '124 Pasien', hint: 'BOR 78% hari ini' },
+                { label: 'Bed Tersedia', value: '35 Bed', hint: 'ICU 4 • NICU 3' },
+                { label: 'Kondisi Prioritas', value: '9 Pasien', hint: 'Perlu monitoring ketat' },
+                { label: 'Rencana Pulang', value: '18 Pasien', hint: 'Target sebelum 17:00' },
               ].map((item) => (
                 <div
                   key={item.label}
@@ -148,7 +182,8 @@ export function SimplePage({ title, description }: SimplePageProps) {
 
           {!title.toLowerCase().includes('tidak ditemukan') &&
            !title.toLowerCase().includes('password') &&
-           !isOutpatientPage && (
+           !isOutpatientPage &&
+           !isInpatientPage && (
             <div
               style={{
                 marginTop: '32px',
@@ -191,6 +226,25 @@ export function SimplePage({ title, description }: SimplePageProps) {
               <div style={{ fontSize: '13px', color: 'var(--fg-secondary)', lineHeight: 1.6 }}>
                 Modul ini sudah disiapkan untuk operasional harian: registrasi kunjungan, triase awal, pemeriksaan dokter,
                 order penunjang, hingga penyelesaian administrasi pasien.
+              </div>
+            </div>
+          )}
+
+          {isInpatientPage && (
+            <div
+              style={{
+                marginTop: '28px',
+                padding: '16px',
+                border: '1px solid color-mix(in srgb, var(--airforce-blue) 20%, transparent)',
+                background: 'color-mix(in srgb, var(--airforce-light) 10%, white)',
+                borderRadius: 'var(--radius)',
+                textAlign: 'left',
+              }}
+            >
+              <div style={{ fontWeight: 700, marginBottom: '6px' }}>Aksi Cepat Rawat Inap</div>
+              <div style={{ fontSize: '13px', color: 'var(--fg-secondary)', lineHeight: 1.6 }}>
+                Modul rawat inap kini menampilkan ringkasan okupansi, kondisi pasien prioritas, pemantauan bed,
+                hingga proses transfer dan discharge agar koordinasi antar-ruang lebih cepat dan terukur.
               </div>
             </div>
           )}
