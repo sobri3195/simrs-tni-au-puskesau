@@ -123,6 +123,10 @@ img { max-width: 100%; height: auto; }
   min-width: 0;
 }
 
+.shell-overlay {
+  display: none;
+}
+
 .page-main {
   padding: 24px;
   flex: 1;
@@ -1722,11 +1726,29 @@ img { max-width: 100%; height: auto; }
   .sidebar {
     position: fixed;
     left: -260px;
+    top: 0;
+    bottom: 0;
     z-index: 200;
   }
   
   .sidebar.open {
     left: 0;
+  }
+
+  .shell-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    z-index: 150;
+  }
+
+  .topbar-menu-btn {
+    display: inline-flex !important;
+  }
+
+  .topbar-search {
+    width: 220px !important;
   }
   
   .metrics-grid {
@@ -1738,9 +1760,32 @@ img { max-width: 100%; height: auto; }
   .topbar {
     padding: 12px 16px;
   }
+
+  .topbar-context {
+    min-width: 0;
+  }
+
+  .topbar-title,
+  .topbar-subtitle,
+  .topbar-user-meta {
+    display: none;
+  }
+
+  .topbar-actions {
+    gap: 8px !important;
+  }
   
   .topbar-search {
     display: none;
+  }
+
+  .topbar .badge {
+    top: 2px !important;
+    right: 2px !important;
+  }
+
+  .sidebar {
+    width: min(85vw, 320px);
   }
   
   .metrics-grid {

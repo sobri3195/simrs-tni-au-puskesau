@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export function Topbar() {
+interface TopbarProps {
+  onToggleSidebar: () => void;
+}
+
+export function Topbar({ onToggleSidebar }: TopbarProps) {
   const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -34,7 +38,30 @@ export function Topbar() {
       }}
     >
       {/* Left Section */}
-      <div className="topbar-left" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+      <div className="topbar-left" style={{ display: 'flex', alignItems: 'center', gap: '16px', minWidth: 0 }}>
+        <button
+          className="topbar-menu-btn"
+          onClick={onToggleSidebar}
+          aria-label="Toggle navigation"
+          style={{
+            width: '40px',
+            height: '40px',
+            border: '1px solid var(--line)',
+            background: 'white',
+            borderRadius: 'var(--radius)',
+            display: 'none',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'var(--fg-secondary)',
+          }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+        </button>
+
         <div className="topbar-context" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <strong className="topbar-title" style={{ fontSize: '15px', fontWeight: 600, color: 'var(--fg)' }}>
@@ -60,7 +87,7 @@ export function Topbar() {
       </div>
 
       {/* Right Section */}
-      <div className="topbar-actions" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <div className="topbar-actions" style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
         {/* Search */}
         <div style={{ position: 'relative' }}>
           <input
@@ -272,7 +299,7 @@ export function Topbar() {
             >
               AS
             </div>
-            <div style={{ textAlign: 'left' }}>
+            <div className="topbar-user-meta" style={{ textAlign: 'left' }}>
               <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--fg)' }}>Dr. Andi</div>
               <div style={{ fontSize: '11px', color: 'var(--neutral)' }}>Dokter IGD</div>
             </div>
