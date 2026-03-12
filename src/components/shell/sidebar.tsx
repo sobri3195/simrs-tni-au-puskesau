@@ -143,7 +143,12 @@ const menuItems: MenuItem[] = [
   },
 ];
 
-export function Sidebar() {
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const location = useLocation();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
@@ -159,16 +164,12 @@ export function Sidebar() {
 
   return (
     <aside
-      className="sidebar"
+      className={`sidebar ${isOpen ? 'open' : ''}`}
       style={{
-        width: '260px',
-        minHeight: '100vh',
         color: 'white',
         padding: '20px 12px',
         background: 'linear-gradient(180deg, #1a2744 0%, #172338 50%, #0f1929 100%)',
         borderRight: '1px solid rgba(255, 255, 255, 0.08)',
-        position: 'sticky',
-        top: 0,
         display: 'flex',
         flexDirection: 'column',
         overflowY: 'auto',
@@ -298,6 +299,7 @@ export function Sidebar() {
               ) : (
                 <NavLink
                   to={item.href}
+                  onClick={onClose}
                   className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
                   style={({ isActive }) => ({
                     display: 'flex',
@@ -341,6 +343,7 @@ export function Sidebar() {
                     <NavLink
                       key={child.href}
                       to={child.href}
+                      onClick={onClose}
                       className={({ isActive }) => isActive ? 'active' : ''}
                       style={({ isActive }) => ({
                         display: 'flex',
