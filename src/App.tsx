@@ -105,6 +105,31 @@ const router = createBrowserRouter([
       
       // Modules
       { path: '/simrs/modules', element: <SimrsModulesPage /> },
+
+      // New navigation modules
+
+      { path: '/patient-services', element: <Navigate to="/registrations/new" replace /> },
+      { path: '/medical-support', element: <Navigate to="/lab" replace /> },
+      { path: '/clinic-management', element: <Navigate to="/clinical/emr" replace /> },
+      { path: '/finance-claims', element: <Navigate to="/cashier" replace /> },
+      { path: '/reports-analytics', element: <Navigate to="/reports" replace /> },
+      { path: '/system-settings', element: <Navigate to="/admin-panel" replace /> },
+      { path: '/others', element: <Navigate to="/user-profile" replace /> },
+
+      { path: '/central-surgery', element: <SimplePage title="Bedah Sentral" /> },
+      { path: '/cssd', element: <SimplePage title="CSSD" /> },
+      { path: '/medical-records-management', element: <SimplePage title="Manajemen Rekam Medik" /> },
+      { path: '/infection-control', element: <SimplePage title="Kontrol Infeksi (PPI)" /> },
+      { path: '/pharmacy-warehouse', element: <SimplePage title="Gudang Farmasi" /> },
+      { path: '/general-warehouse', element: <SimplePage title="Gudang Umum" /> },
+      { path: '/biomedical-equipment', element: <SimplePage title="Alat Biomedis" /> },
+      { path: '/procurement-purchasing', element: <SimplePage title="Pengadaan & Pembelian" /> },
+      { path: '/accounting', element: <SimplePage title="Akuntansi" /> },
+      { path: '/reports/special-tni-au', element: <SimplePage title="Laporan Khusus (TNI AU)" /> },
+      { path: '/admin-panel', element: <SimplePage title="Panel Admin" /> },
+      { path: '/system-bridging', element: <SimplePage title="Bridging Sistem" /> },
+      { path: '/referral-generator-ai', element: <SimplePage title="Referral Generator (AI)" /> },
+      { path: '/user-profile', element: <SimplePage title="Profil Pengguna" /> },
       
       // 404
       { path: '*', element: <SimplePage title="Halaman tidak ditemukan" /> }
