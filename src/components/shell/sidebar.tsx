@@ -23,8 +23,8 @@ const menuItems: MenuItem[] = [
     ),
   },
   {
-    label: 'Pasien',
-    href: '/patients',
+    label: 'Pelayanan Pasien',
+    href: '/patient-services',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -33,59 +33,53 @@ const menuItems: MenuItem[] = [
         <path d="M16 3.13a4 4 0 0 1 0 7.75" />
       </svg>
     ),
-  },
-  {
-    label: 'Registrasi & ADT',
-    href: '/registrations',
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-        <polyline points="14 2 14 8 20 8" />
-        <line x1="12" y1="18" x2="12" y2="12" />
-        <line x1="9" y1="15" x2="15" y2="15" />
-      </svg>
-    ),
     children: [
-      { label: 'Registrasi Baru', href: '/registrations/new' },
-      { label: 'Jadwal Appointment', href: '/registrations/appointments' },
-      { label: 'Admission', href: '/registrations/admission' },
-      { label: 'Transfer', href: '/registrations/transfer' },
-      { label: 'Discharge', href: '/registrations/discharge' },
-    ],
-  },
-  {
-    label: 'Layanan Klinis',
-    href: '/clinical',
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-      </svg>
-    ),
-    badge: 5,
-    children: [
-      { label: 'Rawat Jalan', href: '/clinical/outpatient', badge: 3 },
-      { label: 'IGD & Triase', href: '/clinical/emergency', badge: 2 },
+      { label: 'Pendaftaran & Antrean', href: '/registrations/new' },
+      { label: 'IGD', href: '/clinical/emergency' },
+      { label: 'Rawat Jalan', href: '/clinical/outpatient' },
       { label: 'Rawat Inap', href: '/clinical/inpatient' },
-      { label: 'EMR', href: '/clinical/emr' },
+      { label: 'Bedah Sentral', href: '/central-surgery' },
+      { label: 'CSSD', href: '/cssd' },
+      { label: 'Bank Darah', href: '/blood-bank' },
     ],
   },
   {
-    label: 'Penunjang',
-    href: '/support',
+    label: 'Penunjang Medis',
+    href: '/medical-support',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
       </svg>
     ),
     children: [
-      { label: 'Laboratorium', href: '/lab', badge: 8 },
+      { label: 'Laboratorium', href: '/lab' },
       { label: 'Radiologi', href: '/radiology' },
-      { label: 'Farmasi', href: '/pharmacy', badge: 3 },
+      { label: 'Apotek', href: '/pharmacy' },
     ],
   },
   {
-    label: 'Keuangan',
-    href: '/finance',
+    label: 'Manajemen Klinik',
+    href: '/clinic-management',
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M12 2l7 4v6c0 5-3.5 9.5-7 10-3.5-.5-7-5-7-10V6l7-4z" />
+        <path d="M9 12h6" />
+        <path d="M12 9v6" />
+      </svg>
+    ),
+    children: [
+      { label: 'Rekam Medis (SOAP)', href: '/clinical/emr' },
+      { label: 'Manajemen Rekam Medik', href: '/medical-records-management' },
+      { label: 'Kontrol Infeksi (PPI)', href: '/infection-control' },
+      { label: 'Personel & Kepegawaian', href: '/hr' },
+      { label: 'Gudang Farmasi', href: '/pharmacy-warehouse' },
+      { label: 'Gudang Umum', href: '/general-warehouse' },
+      { label: 'Alat Biomedis', href: '/biomedical-equipment' },
+    ],
+  },
+  {
+    label: 'Keuangan & Klaim',
+    href: '/finance-claims',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <line x1="12" y1="1" x2="12" y2="23" />
@@ -93,52 +87,52 @@ const menuItems: MenuItem[] = [
       </svg>
     ),
     children: [
-      { label: 'Billing', href: '/billing' },
       { label: 'Kasir', href: '/cashier' },
-      { label: 'Klaim', href: '/claims', badge: 2 },
+      { label: 'Pengadaan & Pembelian', href: '/procurement-purchasing' },
+      { label: 'Keuangan', href: '/finance' },
+      { label: 'Akuntansi', href: '/accounting' },
+      { label: 'Asuransi & Klaim', href: '/claims' },
     ],
   },
   {
-    label: 'Operasional RS',
-    href: '/operations',
+    label: 'Laporan & Analitik',
+    href: '/reports-analytics',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-        <polyline points="9 22 9 12 15 12 15 22" />
+        <path d="M3 3v18h18" />
+        <path d="M7 14l4-4 3 3 4-6" />
       </svg>
     ),
     children: [
-      { label: 'Logistik & Stok', href: '/logistics', badge: 4 },
-      { label: 'SDM & Shift', href: '/hr' },
-      { label: 'Bed Management', href: '/beds' },
+      { label: 'Statistik Umum', href: '/reports' },
+      { label: 'Laporan Khusus (TNI AU)', href: '/reports/special-tni-au' },
     ],
   },
   {
-    label: 'Governance',
-    href: '/governance',
+    label: 'Sistem & Pengaturan',
+    href: '/system-settings',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
       </svg>
     ),
     children: [
-      { label: 'Audit Trail', href: '/audit' },
-      { label: 'Laporan', href: '/reports' },
-      { label: 'Konfigurasi', href: '/settings' },
+      { label: 'Panel Admin', href: '/admin-panel' },
+      { label: 'Pengaturan Aplikasi', href: '/settings' },
+      { label: 'Bridging Sistem', href: '/system-bridging' },
+      { label: 'Referral Generator (AI)', href: '/referral-generator-ai' },
     ],
   },
   {
-    label: 'Kolaborasi',
-    href: '/collaboration',
+    label: 'Lainnya',
+    href: '/others',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
       </svg>
     ),
-    badge: 12,
     children: [
-      { label: 'Notifikasi', href: '/notifications', badge: 12 },
-      { label: 'Task & Handover', href: '/tasks' },
+      { label: 'Profil Pengguna', href: '/user-profile' },
     ],
   },
 ];
