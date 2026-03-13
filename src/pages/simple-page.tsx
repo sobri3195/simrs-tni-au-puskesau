@@ -1,253 +1,250 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardBody } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 interface SimplePageProps {
   title: string;
   description?: string;
 }
 
+type ModulePlaybook = {
+  status: 'Siap Operasional' | 'Perlu Integrasi';
+  kpis: { label: string; value: string; hint: string }[];
+  workflows: string[];
+  quickActions: string[];
+};
+
+const defaultPlaybook: ModulePlaybook = {
+  status: 'Perlu Integrasi',
+  kpis: [
+    { label: 'Form Tersedia', value: 'UI Siap', hint: 'Input utama siap dipakai' },
+    { label: 'Integrasi API', value: 'Belum', hint: 'Perlu koneksi backend final' },
+    { label: 'Uji Skenario', value: 'Parsial', hint: 'Butuh regression lintas modul' },
+    { label: 'Audit Aktivitas', value: 'Manual', hint: 'Belum otomatis tercatat penuh' },
+  ],
+  workflows: [
+    'Validasi data utama pasien/transaksi sebelum submit',
+    'Sinkronisasi status ke modul terkait (billing/penunjang/rujukan)',
+    'Konfirmasi keberhasilan proses dan catat jejak operasional',
+  ],
+  quickActions: ['Buat entri baru', 'Review antrean hari ini', 'Cek error integrasi', 'Unduh ringkasan operasional'],
+};
+
+const playbooks: { keyword: string; data: ModulePlaybook }[] = [
+  {
+    keyword: 'klaim',
+    data: {
+      status: 'Perlu Integrasi',
+      kpis: [
+        { label: 'Klaim Diproses', value: '46 berkas', hint: '11 menunggu verifikasi' },
+        { label: 'Klaim Ditolak', value: '3 berkas', hint: 'Perlu revisi kode INA-CBG' },
+        { label: 'SLA Verifikasi', value: '1.7 hari', hint: 'Target < 2 hari' },
+        { label: 'Bridging BPJS', value: 'Stabil', hint: 'Tidak ada downtime hari ini' },
+      ],
+      workflows: [
+        'Validasi kelengkapan SEP, resume medis, dan lampiran penunjang',
+        'Kirim berkas klaim ke payer dan monitor status respon',
+        'Tindak lanjuti klaim pending/ditolak dengan catatan koreksi',
+      ],
+      quickActions: ['Input klaim baru', 'Verifikasi berkas pending', 'Sinkronisasi VClaim', 'Cetak rekap klaim'],
+    },
+  },
+  {
+    keyword: 'audit',
+    data: {
+      status: 'Siap Operasional',
+      kpis: [
+        { label: 'Event Tercatat', value: '1.284', hint: '24 jam terakhir' },
+        { label: 'Aksi Risiko Tinggi', value: '17', hint: 'Perlu review komite' },
+        { label: 'Anomali Login', value: '2 kejadian', hint: 'Sudah ditindaklanjuti' },
+        { label: 'Retensi Log', value: '365 hari', hint: 'Sesuai kebijakan' },
+      ],
+      workflows: [
+        'Pantau event prioritas tinggi dan identifikasi pola penyimpangan',
+        'Lakukan review dan persetujuan tindak lanjut audit',
+        'Distribusikan laporan audit periodik ke manajemen',
+      ],
+      quickActions: ['Filter event risiko tinggi', 'Ekspor log audit', 'Buat tiket investigasi', 'Bagikan laporan harian'],
+    },
+  },
+  {
+    keyword: 'laporan',
+    data: {
+      status: 'Siap Operasional',
+      kpis: [
+        { label: 'Laporan Harian', value: '12 laporan', hint: 'Seluruh unit aktif' },
+        { label: 'Waktu Generate', value: '24 detik', hint: 'Rata-rata hari ini' },
+        { label: 'Kelengkapan Data', value: '96%', hint: '4% menunggu sinkron' },
+        { label: 'Permintaan Ad-hoc', value: '7 permintaan', hint: 'Dari komando pusat' },
+      ],
+      workflows: [
+        'Pilih periode laporan dan unit/faskes yang dianalisis',
+        'Validasi konsistensi data dari modul operasional',
+        'Distribusikan output PDF/Excel ke pemangku kepentingan',
+      ],
+      quickActions: ['Generate laporan BOR', 'Bandingkan antar-faskes', 'Ekspor Excel', 'Jadwalkan laporan otomatis'],
+    },
+  },
+];
+
 export function SimplePage({ title, description }: SimplePageProps) {
   const navigate = useNavigate();
-  const isOutpatientPage = title.toLowerCase().includes('rawat jalan');
-  const isInpatientPage = title.toLowerCase().includes('rawat inap');
+  const pageKey = `simrs-note:${title.toLowerCase()}`;
+  const normalizedTitle = title.toLowerCase();
+  const isNotFound = normalizedTitle.includes('tidak ditemukan');
+  const isPasswordPage = normalizedTitle.includes('password');
+
+  const [note, setNote] = useState(() => {
+    if (typeof window === 'undefined') return '';
+    return localStorage.getItem(pageKey) ?? '';
+  });
+  const [checklist, setChecklist] = useState<Record<number, boolean>>({});
+
+  const playbook = useMemo(
+    () => playbooks.find((item) => normalizedTitle.includes(item.keyword))?.data ?? defaultPlaybook,
+    [normalizedTitle]
+  );
+
+  const saveNote = () => {
+    localStorage.setItem(pageKey, note);
+  };
 
   const getPageIcon = () => {
-    if (title.toLowerCase().includes('password')) return '🔐';
-    if (title.toLowerCase().includes('pasien')) return '👤';
-    if (title.toLowerCase().includes('appointment')) return '📅';
-    if (title.toLowerCase().includes('admission')) return '🏥';
-    if (title.toLowerCase().includes('transfer')) return '↔️';
-    if (title.toLowerCase().includes('discharge')) return '🏠';
-    if (title.toLowerCase().includes('rawat jalan')) return '🩺';
-    if (title.toLowerCase().includes('rawat inap')) return '🛏️';
-    if (title.toLowerCase().includes('emr')) return '📋';
-    if (title.toLowerCase().includes('radiologi')) return '📷';
-    if (title.toLowerCase().includes('klaim')) return '📄';
-    if (title.toLowerCase().includes('logistik')) return '📦';
-    if (title.toLowerCase().includes('sdm')) return '👥';
-    if (title.toLowerCase().includes('bed')) return '🛏️';
-    if (title.toLowerCase().includes('audit')) return '🔍';
-    if (title.toLowerCase().includes('laporan')) return '📊';
-    if (title.toLowerCase().includes('konfigurasi')) return '⚙️';
-    if (title.toLowerCase().includes('notifikasi')) return '🔔';
-    if (title.toLowerCase().includes('task')) return '✅';
-    if (title.toLowerCase().includes('tidak ditemukan')) return '🔍';
+    if (normalizedTitle.includes('password')) return '🔐';
+    if (normalizedTitle.includes('pasien')) return '👤';
+    if (normalizedTitle.includes('appointment')) return '📅';
+    if (normalizedTitle.includes('admission')) return '🏥';
+    if (normalizedTitle.includes('transfer')) return '↔️';
+    if (normalizedTitle.includes('discharge')) return '🏠';
+    if (normalizedTitle.includes('rawat jalan')) return '🩺';
+    if (normalizedTitle.includes('rawat inap')) return '🛏️';
+    if (normalizedTitle.includes('emr')) return '📋';
+    if (normalizedTitle.includes('radiologi')) return '📷';
+    if (normalizedTitle.includes('klaim')) return '📄';
+    if (normalizedTitle.includes('logistik')) return '📦';
+    if (normalizedTitle.includes('sdm')) return '👥';
+    if (normalizedTitle.includes('bed')) return '🛏️';
+    if (normalizedTitle.includes('audit')) return '🔍';
+    if (normalizedTitle.includes('laporan')) return '📊';
+    if (normalizedTitle.includes('konfigurasi')) return '⚙️';
+    if (normalizedTitle.includes('notifikasi')) return '🔔';
+    if (normalizedTitle.includes('task')) return '✅';
+    if (normalizedTitle.includes('tidak ditemukan')) return '🔍';
     return '📄';
   };
 
   const getDescription = () => {
     if (description) return description;
-    if (title.toLowerCase().includes('password')) return 'Halaman pemulihan password untuk mengatur ulang kredensial akun Anda.';
-    if (title.toLowerCase().includes('pasien')) return 'Halaman detail pasien dengan informasi lengkap dan riwayat medis.';
-    if (title.toLowerCase().includes('appointment')) return 'Kelola jadwal appointment pasien untuk pemeriksaan dan konsultasi.';
-    if (title.toLowerCase().includes('admission')) return 'Proses penerimaan pasien rawat inap ke rumah sakit.';
-    if (title.toLowerCase().includes('transfer')) return 'Proses pemindahan pasien antar ruangan atau unit.';
-    if (title.toLowerCase().includes('discharge')) return 'Proses pelepasan pasien dari rawat inap.';
-    if (title.toLowerCase().includes('rawat jalan')) return 'Layanan klinik rawat jalan dan konsultasi dokter.';
-    if (title.toLowerCase().includes('rawat inap')) return 'Manajemen pasien rawat inap dan monitoring kondisi.';
-    if (title.toLowerCase().includes('emr')) return 'Electronic Medical Record untuk dokumentasi klinis.';
-    if (title.toLowerCase().includes('radiologi')) return 'Layanan pencitraan radiologi dan hasil pemeriksaan.';
-    if (title.toLowerCase().includes('klaim')) return 'Manajemen klaim asuransi dan BPJS.';
-    if (title.toLowerCase().includes('logistik')) return 'Pengelolaan stok obat dan alat kesehatan.';
-    if (title.toLowerCase().includes('sdm')) return 'Manajemen sumber daya manusia dan penjadwalan shift.';
-    if (title.toLowerCase().includes('bed')) return 'Monitoring okupansi tempat tidur rumah sakit.';
-    if (title.toLowerCase().includes('audit')) return 'Log aktivitas sistem dan audit trail.';
-    if (title.toLowerCase().includes('laporan')) return 'Laporan operasional dan statistik rumah sakit.';
-    if (title.toLowerCase().includes('konfigurasi')) return 'Pengaturan sistem dan konfigurasi aplikasi.';
-    if (title.toLowerCase().includes('notifikasi')) return 'Pusat notifikasi dan pesan sistem.';
-    if (title.toLowerCase().includes('task')) return 'Manajemen tugas dan handover antar shift.';
-    if (title.toLowerCase().includes('tidak ditemukan')) return 'Halaman yang Anda cari tidak dapat ditemukan.';
+    if (normalizedTitle.includes('password')) return 'Halaman pemulihan password untuk mengatur ulang kredensial akun Anda.';
+    if (normalizedTitle.includes('pasien')) return 'Halaman detail pasien dengan informasi lengkap dan riwayat medis.';
+    if (normalizedTitle.includes('appointment')) return 'Kelola jadwal appointment pasien untuk pemeriksaan dan konsultasi.';
+    if (normalizedTitle.includes('admission')) return 'Proses penerimaan pasien rawat inap ke rumah sakit.';
+    if (normalizedTitle.includes('transfer')) return 'Proses pemindahan pasien antar ruangan atau unit.';
+    if (normalizedTitle.includes('discharge')) return 'Proses pelepasan pasien dari rawat inap.';
+    if (normalizedTitle.includes('rawat jalan')) return 'Layanan klinik rawat jalan dan konsultasi dokter.';
+    if (normalizedTitle.includes('rawat inap')) return 'Manajemen pasien rawat inap dan monitoring kondisi.';
+    if (normalizedTitle.includes('emr')) return 'Electronic Medical Record untuk dokumentasi klinis.';
+    if (normalizedTitle.includes('radiologi')) return 'Layanan pencitraan radiologi dan hasil pemeriksaan.';
+    if (normalizedTitle.includes('klaim')) return 'Manajemen klaim asuransi dan BPJS.';
+    if (normalizedTitle.includes('logistik')) return 'Pengelolaan stok obat dan alat kesehatan.';
+    if (normalizedTitle.includes('sdm')) return 'Manajemen sumber daya manusia dan penjadwalan shift.';
+    if (normalizedTitle.includes('bed')) return 'Monitoring okupansi tempat tidur rumah sakit.';
+    if (normalizedTitle.includes('audit')) return 'Log aktivitas sistem dan audit trail.';
+    if (normalizedTitle.includes('laporan')) return 'Laporan operasional dan statistik rumah sakit.';
+    if (normalizedTitle.includes('konfigurasi')) return 'Pengaturan sistem dan konfigurasi aplikasi.';
+    if (normalizedTitle.includes('notifikasi')) return 'Pusat notifikasi dan pesan sistem.';
+    if (normalizedTitle.includes('task')) return 'Manajemen tugas dan handover antar shift.';
+    if (normalizedTitle.includes('tidak ditemukan')) return 'Halaman yang Anda cari tidak dapat ditemukan.';
     return 'Halaman ini sedang dalam pengembangan.';
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '60vh',
-      }}
-    >
-      <Card style={{ maxWidth: isOutpatientPage || isInpatientPage ? '880px' : '480px', width: '100%' }}>
-        <CardBody style={{ textAlign: 'center', padding: isOutpatientPage || isInpatientPage ? '40px 32px' : '48px 32px' }}>
-          <div
-            style={{
-              width: '80px',
-              height: '80px',
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, var(--airforce-blue) 0%, var(--airforce-light) 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 24px',
-              fontSize: '36px',
-              boxShadow: '0 8px 24px rgba(61, 90, 128, 0.2)',
-            }}
-          >
-            {getPageIcon()}
+    <div style={{ display: 'flex', justifyContent: 'center', minHeight: '60vh' }}>
+      <Card style={{ maxWidth: '980px', width: '100%' }}>
+        <CardBody style={{ padding: '36px 28px' }}>
+          <div style={{ textAlign: 'center' }}>
+            <div
+              style={{
+                width: '80px',
+                height: '80px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, var(--airforce-blue) 0%, var(--airforce-light) 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 16px',
+                fontSize: '36px',
+              }}
+            >
+              {getPageIcon()}
+            </div>
+            <h1 style={{ marginBottom: '10px', fontSize: '24px' }}>{title}</h1>
+            <p style={{ color: 'var(--fg-secondary)', marginBottom: '18px', lineHeight: 1.6 }}>{getDescription()}</p>
+            {!isNotFound && !isPasswordPage && (
+              <Badge variant={playbook.status === 'Siap Operasional' ? 'success' : 'warning'}>{playbook.status}</Badge>
+            )}
           </div>
-          <h1 style={{ marginBottom: '12px', fontSize: '24px' }}>{title}</h1>
-          <p style={{ color: 'var(--fg-secondary)', marginBottom: isOutpatientPage || isInpatientPage ? '24px' : '32px', lineHeight: 1.6 }}>
-            {getDescription()}
-          </p>
 
-          {isOutpatientPage && (
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                gap: '12px',
-                marginBottom: '24px',
-                textAlign: 'left',
-              }}
-            >
-              {[
-                { label: 'Antrian Hari Ini', value: '42 Pasien', hint: '16 menunggu' },
-                { label: 'Dokter Bertugas', value: '8 Dokter', hint: 'Poli umum & spesialis' },
-                { label: 'Rata-rata Tunggu', value: '18 Menit', hint: 'Lebih cepat 4 menit' },
-                { label: 'Kunjungan Selesai', value: '26 Kunjungan', hint: 'Sampai pukul 13:00' },
-              ].map((item) => (
-                <div
-                  key={item.label}
-                  style={{
-                    border: '1px solid var(--line)',
-                    borderRadius: 'var(--radius)',
-                    padding: '12px',
-                    background: 'var(--surface)',
-                  }}
-                >
-                  <div style={{ fontSize: '12px', color: 'var(--fg-secondary)' }}>{item.label}</div>
-                  <div style={{ fontWeight: 700, marginTop: '4px' }}>{item.value}</div>
-                  <div style={{ fontSize: '12px', color: 'var(--neutral)', marginTop: '6px' }}>{item.hint}</div>
+          {!isNotFound && !isPasswordPage && (
+            <>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '12px', marginTop: '22px' }}>
+                {playbook.kpis.map((item) => (
+                  <div key={item.label} style={{ border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: '12px' }}>
+                    <div style={{ fontSize: '12px', color: 'var(--fg-secondary)' }}>{item.label}</div>
+                    <div style={{ fontWeight: 700, marginTop: '4px' }}>{item.value}</div>
+                    <div style={{ fontSize: '12px', color: 'var(--neutral)', marginTop: '6px' }}>{item.hint}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginTop: '20px' }}>
+                <div style={{ border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: '14px' }}>
+                  <h3 style={{ marginTop: 0 }}>Checklist Workflow</h3>
+                  {playbook.workflows.map((item, index) => (
+                    <label key={item} style={{ display: 'flex', gap: '8px', alignItems: 'flex-start', marginBottom: '8px', fontSize: '14px' }}>
+                      <input
+                        type="checkbox"
+                        checked={Boolean(checklist[index])}
+                        onChange={(event) =>
+                          setChecklist((prev) => ({
+                            ...prev,
+                            [index]: event.target.checked,
+                          }))
+                        }
+                      />
+                      <span>{item}</span>
+                    </label>
+                  ))}
                 </div>
-              ))}
-            </div>
+                <div style={{ border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: '14px' }}>
+                  <h3 style={{ marginTop: 0 }}>Aksi Cepat</h3>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '12px' }}>
+                    {playbook.quickActions.map((action) => (
+                      <Badge key={action} variant="info">{action}</Badge>
+                    ))}
+                  </div>
+                  <div style={{ fontSize: '13px', color: 'var(--fg-secondary)' }}>Catatan operasional modul (tersimpan lokal per halaman).</div>
+                  <textarea
+                    value={note}
+                    onChange={(event) => setNote(event.target.value)}
+                    rows={4}
+                    style={{ width: '100%', marginTop: '8px', borderRadius: '10px', border: '1px solid var(--line)', padding: '10px', fontFamily: 'inherit' }}
+                    placeholder="Contoh: menunggu integrasi API verifikasi klaim BPJS..."
+                  />
+                  <Button size="sm" onClick={saveNote} style={{ marginTop: '10px' }}>Simpan Catatan</Button>
+                </div>
+              </div>
+            </>
           )}
 
-          {isInpatientPage && (
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                gap: '12px',
-                marginBottom: '24px',
-                textAlign: 'left',
-              }}
-            >
-              {[
-                { label: 'Pasien Dirawat', value: '124 Pasien', hint: 'BOR 78% hari ini' },
-                { label: 'Bed Tersedia', value: '35 Bed', hint: 'ICU 4 • NICU 3' },
-                { label: 'Kondisi Prioritas', value: '9 Pasien', hint: 'Perlu monitoring ketat' },
-                { label: 'Rencana Pulang', value: '18 Pasien', hint: 'Target sebelum 17:00' },
-              ].map((item) => (
-                <div
-                  key={item.label}
-                  style={{
-                    border: '1px solid var(--line)',
-                    borderRadius: 'var(--radius)',
-                    padding: '12px',
-                    background: 'var(--surface)',
-                  }}
-                >
-                  <div style={{ fontSize: '12px', color: 'var(--fg-secondary)' }}>{item.label}</div>
-                  <div style={{ fontWeight: 700, marginTop: '4px' }}>{item.value}</div>
-                  <div style={{ fontSize: '12px', color: 'var(--neutral)', marginTop: '6px' }}>{item.hint}</div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {title.toLowerCase().includes('tidak ditemukan') ? (
-            <Button onClick={() => navigate('/')} icon={
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                <polyline points="9 22 9 12 15 12 15 22" />
-              </svg>
-            }>
-              Kembali ke Dashboard
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginTop: '24px' }}>
+            <Button variant="secondary" onClick={() => navigate(-1)}>
+              Kembali
             </Button>
-          ) : (
-            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-              <Button variant="secondary" onClick={() => navigate(-1)}>
-                Kembali
-              </Button>
-              <Button onClick={() => navigate('/')}>
-                Dashboard
-              </Button>
-            </div>
-          )}
-
-          {!title.toLowerCase().includes('tidak ditemukan') &&
-           !title.toLowerCase().includes('password') &&
-           !isOutpatientPage &&
-           !isInpatientPage && (
-            <div
-              style={{
-                marginTop: '32px',
-                padding: '16px',
-                background: 'var(--surface-secondary)',
-                borderRadius: 'var(--radius)',
-                fontSize: '13px',
-                color: 'var(--neutral)',
-              }}
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '6px' }}
-              >
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="16" x2="12" y2="12" />
-                <line x1="12" y1="8" x2="12.01" y2="8" />
-              </svg>
-              Halaman ini sedang dalam pengembangan aktif dan akan segera tersedia.
-            </div>
-          )}
-
-          {isOutpatientPage && (
-            <div
-              style={{
-                marginTop: '28px',
-                padding: '16px',
-                border: '1px solid color-mix(in srgb, var(--airforce-blue) 20%, transparent)',
-                background: 'color-mix(in srgb, var(--airforce-light) 10%, white)',
-                borderRadius: 'var(--radius)',
-                textAlign: 'left',
-              }}
-            >
-              <div style={{ fontWeight: 700, marginBottom: '6px' }}>Aksi Cepat Rawat Jalan</div>
-              <div style={{ fontSize: '13px', color: 'var(--fg-secondary)', lineHeight: 1.6 }}>
-                Modul ini sudah disiapkan untuk operasional harian: registrasi kunjungan, triase awal, pemeriksaan dokter,
-                order penunjang, hingga penyelesaian administrasi pasien.
-              </div>
-            </div>
-          )}
-
-          {isInpatientPage && (
-            <div
-              style={{
-                marginTop: '28px',
-                padding: '16px',
-                border: '1px solid color-mix(in srgb, var(--airforce-blue) 20%, transparent)',
-                background: 'color-mix(in srgb, var(--airforce-light) 10%, white)',
-                borderRadius: 'var(--radius)',
-                textAlign: 'left',
-              }}
-            >
-              <div style={{ fontWeight: 700, marginBottom: '6px' }}>Aksi Cepat Rawat Inap</div>
-              <div style={{ fontSize: '13px', color: 'var(--fg-secondary)', lineHeight: 1.6 }}>
-                Modul rawat inap kini menampilkan ringkasan okupansi, kondisi pasien prioritas, pemantauan bed,
-                hingga proses transfer dan discharge agar koordinasi antar-ruang lebih cepat dan terukur.
-              </div>
-            </div>
-          )}
+            <Button onClick={() => navigate('/')}>Dashboard</Button>
+          </div>
         </CardBody>
       </Card>
     </div>
