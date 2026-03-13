@@ -213,6 +213,7 @@ const moduleCategories: { name: string; modules: SimrsModule[] }[] = [
 export function SimrsModulesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedStatus, setSelectedStatus] = useState<'Semua' | SimrsModule['status']>('Semua');
 
   const filteredCategories = useMemo(
     () =>
@@ -222,19 +223,33 @@ export function SimrsModulesPage() {
           ...category,
           modules: category.modules.filter((module) => {
             const term = searchQuery.toLowerCase();
+            const statusMatch = selectedStatus === 'Semua' || module.status === selectedStatus;
             return (
-              module.name.toLowerCase().includes(term) ||
-              module.desc.toLowerCase().includes(term) ||
-              module.highlights.some((item) => item.toLowerCase().includes(term))
+              statusMatch &&
+              (
+                module.name.toLowerCase().includes(term) ||
+                module.desc.toLowerCase().includes(term) ||
+                module.highlights.some((item) => item.toLowerCase().includes(term))
+              )
             );
           }),
         }))
         .filter((category) => category.modules.length > 0),
-    [searchQuery, selectedCategory]
+    [searchQuery, selectedCategory, selectedStatus]
   );
 
   const totalModules = moduleCategories.reduce((sum, c) => sum + c.modules.length, 0);
+  const activeModules = moduleCategories.reduce((sum, c) => sum + c.modules.filter((m) => m.status === 'Aktif').length, 0);
+  const roadmapModules = totalModules - activeModules;
   const totalFeatures = moduleCategories.reduce((sum, c) => sum + c.modules.reduce((mSum, m) => mSum + m.features, 0), 0);
+  const activeProgress = Math.round((activeModules / totalModules) * 100);
+  const filteredModuleCount = filteredCategories.reduce((sum, category) => sum + category.modules.length, 0);
+
+  const resetFilters = () => {
+    setSearchQuery('');
+    setSelectedCategory(null);
+    setSelectedStatus('Semua');
+  };
 
   return (
     <section style={{ maxWidth: '1400px', margin: '0 auto' }}>
@@ -245,9 +260,9 @@ export function SimrsModulesPage() {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px', marginBottom: '24px' }}>
         <Card><CardBody style={{ textAlign: 'center' }}><div style={{ fontSize: '26px', fontWeight: 700, color: 'var(--airforce-blue)' }}>{totalModules}</div><div style={{ fontSize: '12px', color: 'var(--neutral)' }}>Total Modul</div></CardBody></Card>
-        <Card><CardBody style={{ textAlign: 'center' }}><div style={{ fontSize: '26px', fontWeight: 700, color: 'var(--success)' }}>{totalModules - 1}</div><div style={{ fontSize: '12px', color: 'var(--neutral)' }}>Modul Aktif</div></CardBody></Card>
+        <Card><CardBody style={{ textAlign: 'center' }}><div style={{ fontSize: '26px', fontWeight: 700, color: 'var(--success)' }}>{activeModules}</div><div style={{ fontSize: '12px', color: 'var(--neutral)' }}>Modul Aktif ({activeProgress}%)</div></CardBody></Card>
         <Card><CardBody style={{ textAlign: 'center' }}><div style={{ fontSize: '26px', fontWeight: 700 }}>{totalFeatures}+</div><div style={{ fontSize: '12px', color: 'var(--neutral)' }}>Total Fitur</div></CardBody></Card>
-        <Card><CardBody style={{ textAlign: 'center' }}><div style={{ fontSize: '26px', fontWeight: 700, color: 'var(--info)' }}>{moduleCategories.length}</div><div style={{ fontSize: '12px', color: 'var(--neutral)' }}>Kategori</div></CardBody></Card>
+        <Card><CardBody style={{ textAlign: 'center' }}><div style={{ fontSize: '26px', fontWeight: 700, color: 'var(--warning)' }}>{roadmapModules}</div><div style={{ fontSize: '12px', color: 'var(--neutral)' }}>Modul Roadmap</div></CardBody></Card>
       </div>
 
       <Card style={{ marginBottom: '24px' }}>
@@ -257,14 +272,42 @@ export function SimrsModulesPage() {
               <Input placeholder="Cari modul / fitur..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
             </div>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              <Button variant={selectedStatus === 'Semua' ? 'primary' : 'secondary'} size="sm" onClick={() => setSelectedStatus('Semua')}>Semua Status</Button>
+              <Button variant={selectedStatus === 'Aktif' ? 'primary' : 'secondary'} size="sm" onClick={() => setSelectedStatus('Aktif')}>Aktif</Button>
+              <Button variant={selectedStatus === 'Roadmap' ? 'primary' : 'secondary'} size="sm" onClick={() => setSelectedStatus('Roadmap')}>Roadmap</Button>
+            </div>
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               <Button variant={selectedCategory === null ? 'primary' : 'secondary'} size="sm" onClick={() => setSelectedCategory(null)}>Semua</Button>
               {moduleCategories.map((cat) => (
                 <Button key={cat.name} variant={selectedCategory === cat.name ? 'primary' : 'secondary'} size="sm" onClick={() => setSelectedCategory(cat.name)}>{cat.name}</Button>
               ))}
             </div>
+            <Button variant="ghost" size="sm" onClick={resetFilters}>Reset Filter</Button>
           </div>
         </CardBody>
       </Card>
+
+      <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+        <p style={{ margin: 0, color: 'var(--fg-secondary)', fontSize: '14px' }}>
+          Menampilkan <strong style={{ color: 'var(--fg)' }}>{filteredModuleCount}</strong> modul dari total {totalModules} modul.
+        </p>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          {selectedCategory && <Badge variant="info">Kategori: {selectedCategory}</Badge>}
+          {selectedStatus !== 'Semua' && <Badge variant={selectedStatus === 'Aktif' ? 'success' : 'warning'}>Status: {selectedStatus}</Badge>}
+        </div>
+      </div>
+
+      {filteredCategories.length === 0 && (
+        <Card style={{ marginBottom: '20px' }}>
+          <CardBody style={{ textAlign: 'center', padding: '30px 24px' }}>
+            <h3 style={{ marginTop: 0 }}>Tidak ada modul yang sesuai filter</h3>
+            <p style={{ color: 'var(--fg-secondary)', marginBottom: '16px' }}>
+              Coba ubah kata kunci pencarian atau reset filter untuk melihat semua modul dan fiturnya.
+            </p>
+            <Button variant="secondary" onClick={resetFilters}>Tampilkan Semua Modul</Button>
+          </CardBody>
+        </Card>
+      )}
 
       {filteredCategories.map((category) => (
         <div key={category.name} style={{ marginBottom: '28px' }}>
