@@ -42,6 +42,9 @@ const router = createBrowserRouter([
       { path: '/registrations/admission', element: <SimplePage title="Admission" /> },
       { path: '/registrations/transfer', element: <SimplePage title="Transfer" /> },
       { path: '/registrations/discharge', element: <SimplePage title="Discharge" /> },
+      { path: '/queue-management', element: <SimplePage title="Manajemen Antrian" /> },
+      { path: '/referrals', element: <SimplePage title="Rujukan" /> },
+      { path: '/appointments-online', element: <SimplePage title="Appointment Online" /> },
       
       // Clinical Services
       { path: '/clinical', element: <Navigate to="/clinical/emergency" replace /> },
@@ -50,6 +53,10 @@ const router = createBrowserRouter([
       { path: '/clinical/inpatient', element: <SimplePage title="Rawat Inap" /> },
       { path: '/clinical/emr', element: <EmrPage /> },
       { path: '/emr/encounters/demo', element: <SimplePage title="EMR Encounter" /> },
+      { path: '/icu', element: <SimplePage title="ICU & HDU" /> },
+      { path: '/operating-room', element: <SimplePage title="Kamar Operasi" /> },
+      { path: '/telemedicine', element: <SimplePage title="Telemedicine" /> },
+      { path: '/nutrition', element: <SimplePage title="Gizi Klinik" /> },
       
       // Support Services
       { path: '/support', element: <Navigate to="/lab" replace /> },
@@ -58,29 +65,43 @@ const router = createBrowserRouter([
       { path: '/lab/results/:resultId', element: <SimplePage title="Hasil Lab" /> },
       { path: '/radiology', element: <SimplePage title="Radiologi" /> },
       { path: '/pharmacy', element: <PharmacyPage /> },
+      { path: '/rehabilitation', element: <SimplePage title="Rehabilitasi Medik" /> },
+      { path: '/blood-bank', element: <SimplePage title="Bank Darah" /> },
+      { path: '/hemodialysis', element: <SimplePage title="Hemodialisa" /> },
       
       // Finance
       { path: '/finance', element: <Navigate to="/billing" replace /> },
       { path: '/billing', element: <BillingPage /> },
       { path: '/cashier', element: <BillingPage /> },
       { path: '/claims', element: <SimplePage title="Klaim" /> },
+      { path: '/tariff-management', element: <SimplePage title="Manajemen Tarif" /> },
+      { path: '/cost-accounting', element: <SimplePage title="Akuntansi Biaya" /> },
+      { path: '/finance-dashboard', element: <SimplePage title="Dashboard Keuangan" /> },
       
       // Operations
       { path: '/operations', element: <Navigate to="/logistics" replace /> },
       { path: '/logistics', element: <SimplePage title="Logistik & Stok" /> },
       { path: '/hr', element: <SimplePage title="SDM & Shift" /> },
       { path: '/beds', element: <SimplePage title="Bed Management" /> },
+      { path: '/asset-management', element: <SimplePage title="Asset Management" /> },
+      { path: '/maintenance', element: <SimplePage title="Maintenance" /> },
+      { path: '/ambulance', element: <SimplePage title="Ambulance Dispatch" /> },
       
       // Governance
       { path: '/governance', element: <Navigate to="/audit" replace /> },
       { path: '/audit', element: <SimplePage title="Audit Trail" /> },
       { path: '/reports', element: <SimplePage title="Laporan" /> },
       { path: '/settings', element: <SimplePage title="Konfigurasi" /> },
+      { path: '/clinical-governance', element: <SimplePage title="Clinical Governance" /> },
+      { path: '/quality-indicators', element: <SimplePage title="Indikator Mutu" /> },
+      { path: '/document-control', element: <SimplePage title="Kontrol Dokumen" /> },
       
       // Collaboration
       { path: '/collaboration', element: <Navigate to="/notifications" replace /> },
       { path: '/notifications', element: <SimplePage title="Notifikasi" /> },
       { path: '/tasks', element: <SimplePage title="Task & Handover" /> },
+      { path: '/internal-chat', element: <SimplePage title="Internal Chat" /> },
+      { path: '/incident-report', element: <SimplePage title="Laporan Insiden" /> },
       
       // Modules
       { path: '/simrs/modules', element: <SimrsModulesPage /> },
