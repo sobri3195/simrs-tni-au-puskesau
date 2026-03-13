@@ -12,6 +12,9 @@ const moduleCategories = [
       { name: 'Master Pasien (MPI)', desc: 'Manajemen identitas pasien terpusat', status: 'Aktif', href: '/patients', features: 6 },
       { name: 'Registrasi & Admit', desc: 'Pendaftaran dan admission pasien', status: 'Aktif', href: '/registrations/new', features: 6 },
       { name: 'Jadwal Dokter', desc: 'Penjadwalan praktik dokter', status: 'Aktif', href: '/registrations/appointments', features: 4 },
+      { name: 'Manajemen Antrian', desc: 'Pengaturan antrian layanan klinik secara real-time', status: 'Aktif', href: '/queue-management', features: 5 },
+      { name: 'Rujukan', desc: 'Kelola rujukan masuk dan keluar fasilitas kesehatan', status: 'Aktif', href: '/referrals', features: 5 },
+      { name: 'Appointment Online', desc: 'Pemesanan jadwal kunjungan pasien secara daring', status: 'Aktif', href: '/appointments-online', features: 5 },
     ],
   },
   {
@@ -21,6 +24,10 @@ const moduleCategories = [
       { name: 'Rawat Jalan', desc: 'Layanan poliklinik rawat jalan', status: 'Aktif', href: '/clinical/outpatient', features: 6 },
       { name: 'IGD & Triase', desc: 'Unit gawat darurat dan penilaian triase', status: 'Aktif', href: '/clinical/emergency', features: 6 },
       { name: 'Rawat Inap', desc: 'Manajemen pasien rawat inap', status: 'Aktif', href: '/clinical/inpatient', features: 6 },
+      { name: 'ICU & HDU', desc: 'Monitoring pasien intensif dengan protokol kritikal', status: 'Aktif', href: '/icu', features: 6 },
+      { name: 'Kamar Operasi', desc: 'Perencanaan operasi dan dokumentasi tindakan bedah', status: 'Aktif', href: '/operating-room', features: 6 },
+      { name: 'Telemedicine', desc: 'Konsultasi medis jarak jauh dan tindak lanjut pasien', status: 'Aktif', href: '/telemedicine', features: 5 },
+      { name: 'Gizi Klinik', desc: 'Asesmen gizi dan rencana diet pasien terintegrasi', status: 'Aktif', href: '/nutrition', features: 4 },
     ],
   },
   {
@@ -29,6 +36,9 @@ const moduleCategories = [
       { name: 'Laboratorium', desc: 'Pemeriksaan lab dan hasil', status: 'Aktif', href: '/lab', features: 6 },
       { name: 'Radiologi', desc: 'Pencitraan dan hasil radiologi', status: 'Aktif', href: '/radiology', features: 6 },
       { name: 'Farmasi', desc: 'Manajemen obat dan resep', status: 'Aktif', href: '/pharmacy', features: 6 },
+      { name: 'Rehabilitasi Medik', desc: 'Layanan fisioterapi dan rehabilitasi pasien', status: 'Aktif', href: '/rehabilitation', features: 5 },
+      { name: 'Bank Darah', desc: 'Manajemen stok darah, donor, dan distribusi komponen darah', status: 'Aktif', href: '/blood-bank', features: 5 },
+      { name: 'Hemodialisa', desc: 'Pengelolaan jadwal dan tindakan layanan hemodialisa', status: 'Aktif', href: '/hemodialysis', features: 5 },
     ],
   },
   {
@@ -36,6 +46,9 @@ const moduleCategories = [
     modules: [
       { name: 'Billing & Kasir', desc: 'Penagihan dan pembayaran', status: 'Aktif', href: '/billing', features: 6 },
       { name: 'Klaim & Verifikasi', desc: 'Klaim asuransi dan verifikasi', status: 'Aktif', href: '/claims', features: 6 },
+      { name: 'Manajemen Tarif', desc: 'Pengaturan paket layanan dan tarif tindakan', status: 'Aktif', href: '/tariff-management', features: 5 },
+      { name: 'Akuntansi Biaya', desc: 'Pencatatan cost center dan analisis biaya layanan', status: 'Aktif', href: '/cost-accounting', features: 5 },
+      { name: 'Dashboard Keuangan', desc: 'Pemantauan KPI keuangan dan cashflow rumah sakit', status: 'Aktif', href: '/finance-dashboard', features: 5 },
     ],
   },
   {
@@ -44,6 +57,9 @@ const moduleCategories = [
       { name: 'Logistik & Gudang', desc: 'Manajemen stok dan inventori', status: 'Aktif', href: '/logistics', features: 6 },
       { name: 'SDM & Shift', desc: 'Manajemen SDM dan jadwal shift', status: 'Aktif', href: '/hr', features: 6 },
       { name: 'Bed Management', desc: 'Monitoring tempat tidur', status: 'Aktif', href: '/beds', features: 4 },
+      { name: 'Asset Management', desc: 'Inventarisasi dan lifecycle aset medis/nonmedis', status: 'Aktif', href: '/asset-management', features: 5 },
+      { name: 'Maintenance', desc: 'Penjadwalan preventive dan corrective maintenance alat', status: 'Aktif', href: '/maintenance', features: 5 },
+      { name: 'Ambulance Dispatch', desc: 'Koordinasi armada ambulans dan respon lapangan', status: 'Aktif', href: '/ambulance', features: 5 },
     ],
   },
   {
@@ -52,6 +68,9 @@ const moduleCategories = [
       { name: 'Audit Trail', desc: 'Log aktivitas sistem', status: 'Aktif', href: '/audit', features: 6 },
       { name: 'Laporan & Ekspor', desc: 'Laporan dan ekspor data', status: 'Aktif', href: '/reports', features: 6 },
       { name: 'Konfigurasi', desc: 'Pengaturan sistem', status: 'Aktif', href: '/settings', features: 4 },
+      { name: 'Clinical Governance', desc: 'Pemantauan kepatuhan klinis dan patient safety', status: 'Aktif', href: '/clinical-governance', features: 5 },
+      { name: 'Indikator Mutu', desc: 'Pelacakan indikator mutu layanan dan mutu klinis', status: 'Aktif', href: '/quality-indicators', features: 5 },
+      { name: 'Kontrol Dokumen', desc: 'Manajemen dokumen kebijakan, SOP, dan versi', status: 'Aktif', href: '/document-control', features: 4 },
     ],
   },
   {
@@ -59,6 +78,8 @@ const moduleCategories = [
     modules: [
       { name: 'Notifikasi', desc: 'Pusat notifikasi sistem', status: 'Aktif', href: '/notifications', features: 4 },
       { name: 'Task & Handover', desc: 'Manajemen tugas dan operan shift', status: 'Aktif', href: '/tasks', features: 6 },
+      { name: 'Internal Chat', desc: 'Komunikasi internal lintas unit secara aman', status: 'Aktif', href: '/internal-chat', features: 5 },
+      { name: 'Laporan Insiden', desc: 'Pelaporan insiden dan tindak lanjut keselamatan', status: 'Aktif', href: '/incident-report', features: 5 },
     ],
   },
 ];
