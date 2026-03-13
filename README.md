@@ -23,3 +23,6 @@ npm run preview
 ```
 
 Tambahan: `npm run start` disediakan sebagai alias Vite untuk semua skenario development lokal.
+
+## Dokumen Analisis
+- Analisis mendalam kelengkapan fitur dan kesiapan modul tersedia di `docs/ANALISIS_KELENGKAPAN_MODUL.md`.
