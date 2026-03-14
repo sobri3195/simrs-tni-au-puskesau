@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardBody } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -12,6 +12,34 @@ type SimrsModule = {
   href: string;
   features: number;
   highlights: string[];
+};
+
+type SortOption = 'A-Z' | 'Fitur Terbanyak' | 'Kesiapan Tertinggi';
+
+type ModuleReadiness = {
+  score: number;
+  badge: 'Siap Scale-up' | 'Perlu Penguatan';
+  checklist: { label: string; done: boolean }[];
+};
+
+const FILTER_STORAGE_KEY = 'simrs-modules:filters';
+
+const getModuleReadiness = (module: SimrsModule): ModuleReadiness => {
+  const checklist = [
+    { label: 'UI Modul', done: true },
+    { label: 'Kontrak API', done: module.status === 'Aktif' && module.features >= 3 },
+    { label: 'Uji Integrasi', done: module.status === 'Aktif' && module.features >= 4 },
+    { label: 'Kontrol Akses', done: module.status === 'Aktif' },
+    { label: 'Audit Aktivitas', done: module.status === 'Aktif' && module.features >= 2 },
+  ];
+
+  const score = Math.round((checklist.filter((item) => item.done).length / checklist.length) * 100);
+
+  return {
+    score,
+    badge: score >= 80 ? 'Siap Scale-up' : 'Perlu Penguatan',
+    checklist,
+  };
 };
 
 const moduleCategories: { name: string; modules: SimrsModule[] }[] = [
@@ -214,28 +242,67 @@ export function SimrsModulesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<'Semua' | SimrsModule['status']>('Semua');
+  const [sortOption, setSortOption] = useState<SortOption>('A-Z');
+
+  useEffect(() => {
+    const saved = localStorage.getItem(FILTER_STORAGE_KEY);
+    if (!saved) return;
+
+    try {
+      const parsed = JSON.parse(saved) as {
+        searchQuery?: string;
+        selectedCategory?: string | null;
+        selectedStatus?: 'Semua' | SimrsModule['status'];
+        sortOption?: SortOption;
+      };
+
+      setSearchQuery(parsed.searchQuery ?? '');
+      setSelectedCategory(parsed.selectedCategory ?? null);
+      setSelectedStatus(parsed.selectedStatus ?? 'Semua');
+      setSortOption(parsed.sortOption ?? 'A-Z');
+    } catch {
+      localStorage.removeItem(FILTER_STORAGE_KEY);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(
+      FILTER_STORAGE_KEY,
+      JSON.stringify({ searchQuery, selectedCategory, selectedStatus, sortOption })
+    );
+  }, [searchQuery, selectedCategory, selectedStatus, sortOption]);
 
   const filteredCategories = useMemo(
     () =>
       moduleCategories
         .filter((category) => !selectedCategory || category.name === selectedCategory)
-        .map((category) => ({
-          ...category,
-          modules: category.modules.filter((module) => {
-            const term = searchQuery.toLowerCase();
-            const statusMatch = selectedStatus === 'Semua' || module.status === selectedStatus;
-            return (
-              statusMatch &&
-              (
-                module.name.toLowerCase().includes(term) ||
-                module.desc.toLowerCase().includes(term) ||
-                module.highlights.some((item) => item.toLowerCase().includes(term))
-              )
-            );
-          }),
-        }))
+        .map((category) => {
+          const sortedModules = [...category.modules]
+            .filter((module) => {
+              const term = searchQuery.toLowerCase();
+              const statusMatch = selectedStatus === 'Semua' || module.status === selectedStatus;
+              return (
+                statusMatch &&
+                (
+                  module.name.toLowerCase().includes(term) ||
+                  module.desc.toLowerCase().includes(term) ||
+                  module.highlights.some((item) => item.toLowerCase().includes(term))
+                )
+              );
+            })
+            .sort((a, b) => {
+              if (sortOption === 'Fitur Terbanyak') return b.features - a.features;
+              if (sortOption === 'Kesiapan Tertinggi') return getModuleReadiness(b).score - getModuleReadiness(a).score;
+              return a.name.localeCompare(b.name, 'id-ID');
+            });
+
+          return {
+            ...category,
+            modules: sortedModules,
+          };
+        })
         .filter((category) => category.modules.length > 0),
-    [searchQuery, selectedCategory, selectedStatus]
+    [searchQuery, selectedCategory, selectedStatus, sortOption]
   );
 
   const totalModules = moduleCategories.reduce((sum, c) => sum + c.modules.length, 0);
@@ -244,11 +311,20 @@ export function SimrsModulesPage() {
   const totalFeatures = moduleCategories.reduce((sum, c) => sum + c.modules.reduce((mSum, m) => mSum + m.features, 0), 0);
   const activeProgress = Math.round((activeModules / totalModules) * 100);
   const filteredModuleCount = filteredCategories.reduce((sum, category) => sum + category.modules.length, 0);
+  const readinessScore = Math.round(
+    moduleCategories
+      .flatMap((category) => category.modules)
+      .reduce((sum, module) => sum + getModuleReadiness(module).score, 0) / totalModules
+  );
+  const modulesNeedAttention = moduleCategories
+    .flatMap((category) => category.modules)
+    .filter((module) => getModuleReadiness(module).score < 80).length;
 
   const resetFilters = () => {
     setSearchQuery('');
     setSelectedCategory(null);
     setSelectedStatus('Semua');
+    setSortOption('A-Z');
   };
 
   return (
@@ -263,6 +339,8 @@ export function SimrsModulesPage() {
         <Card><CardBody style={{ textAlign: 'center' }}><div style={{ fontSize: '26px', fontWeight: 700, color: 'var(--success)' }}>{activeModules}</div><div style={{ fontSize: '12px', color: 'var(--neutral)' }}>Modul Aktif ({activeProgress}%)</div></CardBody></Card>
         <Card><CardBody style={{ textAlign: 'center' }}><div style={{ fontSize: '26px', fontWeight: 700 }}>{totalFeatures}+</div><div style={{ fontSize: '12px', color: 'var(--neutral)' }}>Total Fitur</div></CardBody></Card>
         <Card><CardBody style={{ textAlign: 'center' }}><div style={{ fontSize: '26px', fontWeight: 700, color: 'var(--warning)' }}>{roadmapModules}</div><div style={{ fontSize: '12px', color: 'var(--neutral)' }}>Modul Roadmap</div></CardBody></Card>
+        <Card><CardBody style={{ textAlign: 'center' }}><div style={{ fontSize: '26px', fontWeight: 700, color: 'var(--airforce-blue)' }}>{readinessScore}%</div><div style={{ fontSize: '12px', color: 'var(--neutral)' }}>Skor Kesiapan Rata-rata</div></CardBody></Card>
+        <Card><CardBody style={{ textAlign: 'center' }}><div style={{ fontSize: '26px', fontWeight: 700, color: 'var(--danger)' }}>{modulesNeedAttention}</div><div style={{ fontSize: '12px', color: 'var(--neutral)' }}>Modul Perlu Penguatan</div></CardBody></Card>
       </div>
 
       <Card style={{ marginBottom: '24px' }}>
@@ -270,6 +348,11 @@ export function SimrsModulesPage() {
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <div style={{ flex: 1, minWidth: 260 }}>
               <Input placeholder="Cari modul / fitur..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+            </div>
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              <Button variant={sortOption === 'A-Z' ? 'primary' : 'secondary'} size="sm" onClick={() => setSortOption('A-Z')}>Urut A-Z</Button>
+              <Button variant={sortOption === 'Fitur Terbanyak' ? 'primary' : 'secondary'} size="sm" onClick={() => setSortOption('Fitur Terbanyak')}>Fitur Terbanyak</Button>
+              <Button variant={sortOption === 'Kesiapan Tertinggi' ? 'primary' : 'secondary'} size="sm" onClick={() => setSortOption('Kesiapan Tertinggi')}>Kesiapan Tertinggi</Button>
             </div>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               <Button variant={selectedStatus === 'Semua' ? 'primary' : 'secondary'} size="sm" onClick={() => setSelectedStatus('Semua')}>Semua Status</Button>
@@ -292,6 +375,7 @@ export function SimrsModulesPage() {
           Menampilkan <strong style={{ color: 'var(--fg)' }}>{filteredModuleCount}</strong> modul dari total {totalModules} modul.
         </p>
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <Badge variant="neutral">Urutan: {sortOption}</Badge>
           {selectedCategory && <Badge variant="info">Kategori: {selectedCategory}</Badge>}
           {selectedStatus !== 'Semua' && <Badge variant={selectedStatus === 'Aktif' ? 'success' : 'warning'}>Status: {selectedStatus}</Badge>}
         </div>
@@ -319,6 +403,21 @@ export function SimrsModulesPage() {
             {category.modules.map((module) => (
               <Card key={module.name} hover>
                 <CardBody>
+                  {(() => {
+                    const readiness = getModuleReadiness(module);
+                    return (
+                      <>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', gap: '8px' }}>
+                          <Badge variant={readiness.score >= 80 ? 'success' : 'warning'}>
+                            {readiness.badge} ({readiness.score}%)
+                          </Badge>
+                          <span style={{ fontSize: '12px', color: 'var(--neutral)' }}>
+                            {readiness.checklist.filter((item) => item.done).length}/{readiness.checklist.length} indikator
+                          </span>
+                        </div>
+                      </>
+                    );
+                  })()}
                   <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
                     <h3 style={{ marginTop: 0, fontSize: '15px' }}>{module.name}</h3>
                     <Badge variant={module.status === 'Aktif' ? 'success' : 'warning'}>{module.status}</Badge>
@@ -329,6 +428,13 @@ export function SimrsModulesPage() {
                       <li key={item} style={{ marginBottom: '4px' }}>{item}</li>
                     ))}
                   </ul>
+                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '10px' }}>
+                    {getModuleReadiness(module).checklist.map((item) => (
+                      <Badge key={item.label} variant={item.done ? 'success' : 'neutral'}>
+                        {item.done ? '✓' : '•'} {item.label}
+                      </Badge>
+                    ))}
+                  </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={{ fontSize: '12px', color: 'var(--neutral)' }}>{module.features} fitur</span>
                     <Link to={module.href} style={{ color: 'var(--airforce-blue)', fontWeight: 600, fontSize: '14px' }}>Buka</Link>
