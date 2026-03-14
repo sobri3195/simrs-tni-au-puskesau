@@ -14,6 +14,7 @@ type ModulePlaybook = {
   kpis: { label: string; value: string; hint: string }[];
   workflows: string[];
   quickActions: string[];
+  relatedRoutes: { label: string; href: string }[];
 };
 
 const defaultPlaybook: ModulePlaybook = {
@@ -30,6 +31,11 @@ const defaultPlaybook: ModulePlaybook = {
     'Konfirmasi keberhasilan proses dan catat jejak operasional',
   ],
   quickActions: ['Buat entri baru', 'Review antrean hari ini', 'Cek error integrasi', 'Unduh ringkasan operasional'],
+  relatedRoutes: [
+    { label: 'Katalog Modul', href: '/simrs/modules' },
+    { label: 'Dashboard Komando', href: '/dashboard/command' },
+    { label: 'Data Pasien', href: '/patients' },
+  ],
 };
 
 const playbooks: { keyword: string; data: ModulePlaybook }[] = [
@@ -49,6 +55,11 @@ const playbooks: { keyword: string; data: ModulePlaybook }[] = [
         'Tindak lanjuti klaim pending/ditolak dengan catatan koreksi',
       ],
       quickActions: ['Input klaim baru', 'Verifikasi berkas pending', 'Sinkronisasi VClaim', 'Cetak rekap klaim'],
+      relatedRoutes: [
+        { label: 'Kasir/Billing', href: '/cashier' },
+        { label: 'Registrasi', href: '/registrations/new' },
+        { label: 'Dashboard Keuangan', href: '/finance-dashboard' },
+      ],
     },
   },
   {
@@ -67,6 +78,11 @@ const playbooks: { keyword: string; data: ModulePlaybook }[] = [
         'Distribusikan laporan audit periodik ke manajemen',
       ],
       quickActions: ['Filter event risiko tinggi', 'Ekspor log audit', 'Buat tiket investigasi', 'Bagikan laporan harian'],
+      relatedRoutes: [
+        { label: 'Laporan', href: '/reports' },
+        { label: 'Notifikasi', href: '/notifications' },
+        { label: 'Konfigurasi', href: '/settings' },
+      ],
     },
   },
   {
@@ -85,6 +101,34 @@ const playbooks: { keyword: string; data: ModulePlaybook }[] = [
         'Distribusikan output PDF/Excel ke pemangku kepentingan',
       ],
       quickActions: ['Generate laporan BOR', 'Bandingkan antar-faskes', 'Ekspor Excel', 'Jadwalkan laporan otomatis'],
+      relatedRoutes: [
+        { label: 'Dashboard Komando', href: '/dashboard/command' },
+        { label: 'Laboratorium', href: '/lab' },
+        { label: 'Farmasi', href: '/pharmacy' },
+      ],
+    },
+  },
+  {
+    keyword: 'logistik',
+    data: {
+      status: 'Perlu Integrasi',
+      kpis: [
+        { label: 'Stok Aman', value: '82%', hint: '18% item perlu restock' },
+        { label: 'Permintaan Pending', value: '14 tiket', hint: '4 tiket > 24 jam' },
+        { label: 'Lead Time', value: '2.3 hari', hint: 'Target < 2 hari' },
+        { label: 'Akurasi Stok', value: '94%', hint: 'Selisih audit mingguan' },
+      ],
+      workflows: [
+        'Validasi kebutuhan unit dan prioritas pengiriman',
+        'Lakukan picking, packing, dan update status distribusi',
+        'Tutup transaksi dan lakukan rekonsiliasi stok harian',
+      ],
+      quickActions: ['Buat permintaan logistik', 'Proses pengiriman', 'Cetak label gudang', 'Rekonsiliasi stok'],
+      relatedRoutes: [
+        { label: 'Gudang Farmasi', href: '/pharmacy-warehouse' },
+        { label: 'Gudang Umum', href: '/general-warehouse' },
+        { label: 'Pengadaan', href: '/procurement-purchasing' },
+      ],
     },
   },
 ];
@@ -92,6 +136,7 @@ const playbooks: { keyword: string; data: ModulePlaybook }[] = [
 export function SimplePage({ title, description }: SimplePageProps) {
   const navigate = useNavigate();
   const pageKey = `simrs-note:${title.toLowerCase()}`;
+  const checklistKey = `simrs-checklist:${title.toLowerCase()}`;
   const normalizedTitle = title.toLowerCase();
   const isNotFound = normalizedTitle.includes('tidak ditemukan');
   const isPasswordPage = normalizedTitle.includes('password');
@@ -100,7 +145,17 @@ export function SimplePage({ title, description }: SimplePageProps) {
     if (typeof window === 'undefined') return '';
     return localStorage.getItem(pageKey) ?? '';
   });
-  const [checklist, setChecklist] = useState<Record<number, boolean>>({});
+  const [checklist, setChecklist] = useState<Record<number, boolean>>(() => {
+    if (typeof window === 'undefined') return {};
+    const stored = localStorage.getItem(checklistKey);
+    if (!stored) return {};
+
+    try {
+      return JSON.parse(stored) as Record<number, boolean>;
+    } catch {
+      return {};
+    }
+  });
 
   const playbook = useMemo(
     () => playbooks.find((item) => normalizedTitle.includes(item.keyword))?.data ?? defaultPlaybook,
@@ -110,6 +165,27 @@ export function SimplePage({ title, description }: SimplePageProps) {
   const saveNote = () => {
     localStorage.setItem(pageKey, note);
   };
+
+  const toggleChecklist = (index: number, checked: boolean) => {
+    setChecklist((prev) => {
+      const next = {
+        ...prev,
+        [index]: checked,
+      };
+      localStorage.setItem(checklistKey, JSON.stringify(next));
+      return next;
+    });
+  };
+
+  const clearModuleProgress = () => {
+    setChecklist({});
+    setNote('');
+    localStorage.removeItem(checklistKey);
+    localStorage.removeItem(pageKey);
+  };
+
+  const completedChecklist = playbook.workflows.filter((_, index) => Boolean(checklist[index])).length;
+  const checklistProgress = Math.round((completedChecklist / playbook.workflows.length) * 100);
 
   const getPageIcon = () => {
     if (normalizedTitle.includes('password')) return '🔐';
@@ -199,6 +275,23 @@ export function SimplePage({ title, description }: SimplePageProps) {
                 ))}
               </div>
 
+              <div style={{ marginTop: '14px', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: '12px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', fontSize: '13px' }}>
+                  <strong>Progress Workflow</strong>
+                  <span style={{ color: 'var(--fg-secondary)' }}>{completedChecklist}/{playbook.workflows.length} langkah</span>
+                </div>
+                <div style={{ height: '8px', borderRadius: '999px', background: 'var(--surface)', overflow: 'hidden' }}>
+                  <div
+                    style={{
+                      width: `${checklistProgress}%`,
+                      height: '100%',
+                      background: checklistProgress === 100 ? 'var(--success)' : 'var(--airforce-blue)',
+                      transition: 'width 0.25s ease',
+                    }}
+                  />
+                </div>
+              </div>
+
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginTop: '20px' }}>
                 <div style={{ border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: '14px' }}>
                   <h3 style={{ marginTop: 0 }}>Checklist Workflow</h3>
@@ -207,12 +300,7 @@ export function SimplePage({ title, description }: SimplePageProps) {
                       <input
                         type="checkbox"
                         checked={Boolean(checklist[index])}
-                        onChange={(event) =>
-                          setChecklist((prev) => ({
-                            ...prev,
-                            [index]: event.target.checked,
-                          }))
-                        }
+                        onChange={(event) => toggleChecklist(index, event.target.checked)}
                       />
                       <span>{item}</span>
                     </label>
@@ -234,6 +322,18 @@ export function SimplePage({ title, description }: SimplePageProps) {
                     placeholder="Contoh: menunggu integrasi API verifikasi klaim BPJS..."
                   />
                   <Button size="sm" onClick={saveNote} style={{ marginTop: '10px' }}>Simpan Catatan</Button>
+                </div>
+              </div>
+
+              <div style={{ marginTop: '16px', border: '1px solid var(--line)', borderRadius: 'var(--radius)', padding: '14px' }}>
+                <h3 style={{ marginTop: 0 }}>Rute Terkait</h3>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  {playbook.relatedRoutes.map((route) => (
+                    <Button key={route.href} size="sm" variant="secondary" onClick={() => navigate(route.href)}>
+                      {route.label}
+                    </Button>
+                  ))}
+                  <Button size="sm" variant="ghost" onClick={clearModuleProgress}>Reset Progres Modul</Button>
                 </div>
               </div>
             </>
